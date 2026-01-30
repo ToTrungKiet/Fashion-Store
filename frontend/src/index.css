@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
+a.active  {
+    @apply text-red-600;
+}
+
 a.active hr {
     display: block;
 }
@@ -21,7 +25,7 @@ a.active hr {
 
 @media (max-width: 640px) {
   a.active {
-    background-color: black;
+    @apply bg-red-400;
     color: white;
   }
 }
