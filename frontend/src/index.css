@@ -5,8 +5,14 @@ a.active  {
     @apply text-red-600;
 }
 
+a hr {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-in-out;
+}
+
 a.active hr {
-    display: block;
+    transform: scaleX(1);
 }
 
 * {
