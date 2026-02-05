@@ -15,19 +15,19 @@ const Navbar = () => {
       <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>
         <NavLink to='/' className='flex flex-col items-center gap-1'>
           <p className='transition hover:text-red-400'>TRANG CHỦ</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-red-600 hidden' />
+          <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
         </NavLink>
         <NavLink to='/collection' className='flex flex-col items-center gap-1'>
           <p className='transition hover:text-red-400'>BỘ SƯU TẬP</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-red-600 hidden' />
+          <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
         </NavLink>
         <NavLink to='/about' className='flex flex-col items-center gap-1'>
           <p className='transition hover:text-red-400'>GIỚI THIỆU</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-red-600 hidden' />
+          <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
         </NavLink>
         <NavLink to='/contact' className='flex flex-col items-center gap-1'>
           <p className='transition hover:text-red-400'>LIÊN HỆ</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-red-600 hidden' />
+          <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
         </NavLink>
       </ul>
 
