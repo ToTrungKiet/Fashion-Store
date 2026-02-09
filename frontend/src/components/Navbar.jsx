@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { assets } from '../assets/assets';
+import { ShopContext } from '../context/ShopContext';
 import { NavLink, Link } from 'react-router-dom';
 import { FiSearch, FiUser, FiShoppingBag } from "react-icons/fi";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-
+  const { setShowSearch } = useContext(ShopContext);
   return (
     <div className='flex items-center justify-between py-5 font-medium'>
       <Link to='/'>
@@ -32,7 +33,7 @@ const Navbar = () => {
       </ul>
 
       <div className='flex items-center gap-6'>
-        <FiSearch className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
+        <FiSearch onClick={() => setShowSearch(true)} className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
 
         <div className='group relative'>
           <FiUser className='w-6 h-6 cursor-pointer hover:text-red-500 transition' />
