@@ -1,7 +1,10 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 
 const Hero = () => {
+
+  const navigate = useNavigate();
+
   return (
     <div className='relative w-full h-[60vh] md:h-[85vh]'>
       
@@ -28,7 +31,7 @@ const Hero = () => {
             KHÁM PHÁ BỘ SƯU TẬP MỚI NHẤT
           </p>
 
-          <button className='mt-8 px-8 py-3 bg-red-500 hover:bg-red-600 transition text-white text-sm tracking-wide rounded-full cursor-pointer'>
+          <button onClick={() => navigate('/collection')} className='mt-8 px-8 py-3 bg-red-500 hover:bg-red-600 transition text-white text-sm tracking-wide rounded-full cursor-pointer'>
             MUA NGAY
           </button>
         </div>
