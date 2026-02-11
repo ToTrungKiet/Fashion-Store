@@ -1,9 +1,10 @@
-import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
+import { useContext } from 'react'
+import { ShopContext } from '../context/ShopContext'
 
 const Hero = () => {
 
-  const navigate = useNavigate();
+  const { navigate } = useContext(ShopContext)
 
   return (
     <div className='relative w-full h-[60vh] md:h-[85vh]'>

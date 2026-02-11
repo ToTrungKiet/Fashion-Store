@@ -102,7 +102,7 @@ export const products = [
     name: 'Áo thun bé gái cổ tròn cotton',
     description:
       'Áo thun cotton mềm mại dành cho bé gái, thiết kế cổ tròn, tay ngắn, form thoải mái, phù hợp mặc hằng ngày và các hoạt động vui chơi.',
-    price: '100.000',
+    price: 100000,
     image: [p_img9],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -115,7 +115,7 @@ export const products = [
     name: 'Quần dài nam dáng tapered túi hộp',
     description:
       'Quần dài nam dáng tapered hiện đại, thiết kế ống gọn, có túi hộp tiện dụng hai bên, phù hợp phong cách casual và streetwear.',
-    price: '110.000',
+    price: 110000,
     image: [p_img10],
     category: 'Men',
     subCategory: 'Bottomwear',
@@ -128,7 +128,7 @@ export const products = [
     name: 'Áo thun nam cổ tròn tay raglan',
     description:
       'Áo thun nam chất liệu cotton, cổ tròn, thiết kế tay raglan phối màu, mang lại cảm giác thoải mái và phong cách trẻ trung.',
-    price: '120.000',
+    price: 120000,
     image: [p_img11],
     category: 'Men',
     subCategory: 'Topwear',
@@ -141,7 +141,7 @@ export const products = [
     name: 'Áo sơ mi nữ cotton tay ngắn',
     description:
       'Áo nữ chất liệu cotton nhẹ, cổ tròn, tay ngắn, form suông đơn giản, phù hợp mặc đi làm hoặc đi chơi hằng ngày.',
-    price: '130.000',
+    price: 130000,
     image: [p_img13],
     category: 'Women',
     subCategory: 'Topwear',
@@ -154,7 +154,7 @@ export const products = [
     name: 'Áo sơ mi bé trai cotton tay ngắn',
     description:
       'Áo sơ mi cotton dành cho bé trai, tay ngắn, thoáng mát và dễ phối đồ cho sinh hoạt hằng ngày.',
-    price: '160.000',
+    price: 160000,
     image: [p_img14],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -167,7 +167,7 @@ export const products = [
     name: 'Áo nữ trễ vai họa tiết hoa',
     description:
       'Áo nữ thiết kế trễ vai thời trang, họa tiết hoa nổi bật, tay ngắn phồng nhẹ, phù hợp mặc đi chơi hoặc du lịch.',
-    price: '160.000',
+    price: 160000,
     image: [p_img1],
     category: 'Women',
     subCategory: 'Topwear',
@@ -180,7 +180,7 @@ export const products = [
     name: 'Áo thun nam cổ tròn cotton trơn',
     description:
       'Áo thun nam cổ tròn, chất liệu cotton mềm mại, thiết kế trơn basic, dễ mặc và dễ phối với nhiều phong cách khác nhau.',
-    price: '150.000',
+    price: 150000,
     image: [p_img12],
     category: 'Men',
     subCategory: 'Topwear',
@@ -193,7 +193,7 @@ export const products = [
     name: 'Quần dài nam dáng tapered lưng thun',
     description:
       'Quần dài nam dáng tapered, thiết kế lưng thun kèm dây rút, form gọn gàng, mang lại sự thoải mái và phong cách năng động.',
-    price: 140,
+    price: 240000,
     image: [p_img15],
     category: 'Men',
     subCategory: 'Bottomwear',
@@ -206,7 +206,7 @@ export const products = [
     name: 'Áo bé gái cổ tròn tay ngắn cotton',
     description:
       'Áo dành cho bé gái chất liệu cotton mềm mại, thiết kế cổ tròn, tay ngắn, form thoải mái, phù hợp mặc hằng ngày.',
-    price: '130.000',
+    price: 130000,
     image: [p_img16],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -219,7 +219,7 @@ export const products = [
     name: 'Quần dài nam dáng tapered thể thao',
     description:
       'Quần dài nam dáng tapered, thiết kế ống gọn, form thể thao, phù hợp cho vận động nhẹ, đi chơi hoặc mặc thường ngày.',
-    price: '150.000',
+    price: 150000,
     image: [p_img17],
     category: 'Men',
     subCategory: 'Bottomwear',
@@ -232,7 +232,7 @@ export const products = [
     name: 'Áo thun bé trai cổ tròn cotton in chữ',
     description:
       'Áo thun bé trai chất liệu cotton thoáng mát, cổ tròn, tay ngắn, thiết kế in chữ năng động, phù hợp mặc đi học và vui chơi.',
-    price: '180.000',
+    price: 180000,
     image: [p_img18],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -245,7 +245,7 @@ export const products = [
     name: 'Áo thun bé trai cổ tròn cotton trơn',
     description:
       'Áo thun cotton dành cho bé trai, thiết kế cổ tròn, tay ngắn, kiểu dáng basic, dễ phối đồ cho nhiều hoàn cảnh.',
-    price: '160.000',
+    price: 160000,
     image: [p_img19],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -258,7 +258,7 @@ export const products = [
     name: 'Quần palazzo nữ họa tiết kèm thắt lưng',
     description:
       'Quần palazzo nữ ống rộng, họa tiết nổi bật, thiết kế cạp cao kèm thắt lưng, mang lại sự thoải mái và phong cách thời trang.',
-    price: '190.000',
+    price: 190000,
     image: [p_img20],
     category: 'Women',
     subCategory: 'Bottomwear',
@@ -271,7 +271,7 @@ export const products = [
     name: 'Áo khoác nữ khóa kéo dáng relaxed',
     description:
       'Áo khoác nữ dáng relaxed, thiết kế khóa kéo phía trước, form vừa thoải mái, phù hợp mặc khi thời tiết mát hoặc đi làm, đi chơi.',
-    price: '170.000',
+    price: 170000,
     image: [p_img21],
     category: 'Women',
     subCategory: 'Winterwear',
@@ -284,7 +284,7 @@ export const products = [
     name: 'Quần palazzo nữ trơn cạp cao',
     description:
       'Quần palazzo nữ thiết kế trơn, ống rộng, cạp cao, chất liệu mềm mại, tạo cảm giác thoải mái và thanh lịch.',
-    price: '200.000',
+    price: 200000,
     image: [p_img22],
     category: 'Women',
     subCategory: 'Bottomwear',
@@ -297,7 +297,7 @@ export const products = [
     name: 'Áo thun bé trai cổ tròn cotton không tay',
     description:
       'Áo thun cotton không tay dành cho bé trai, thiết kế cổ tròn, phong cách thể thao, phù hợp mặc mùa hè và hoạt động ngoài trời.',
-    price: '180.000',
+    price: 180000,
     image: [p_img23],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -310,7 +310,7 @@ export const products = [
     name: 'Áo sơ mi bé trai kẻ sọc cotton',
     description:
       'Áo sơ mi dành cho bé trai chất liệu cotton, thiết kế kẻ sọc dọc, tay ngắn, form thoải mái, phù hợp mặc đi chơi hoặc dạo phố.',
-    price: '210.000',
+    price: 210000,
     image: [p_img24],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -323,7 +323,7 @@ export const products = [
     name: 'Áo bé gái cổ tròn cotton dáng rộng',
     description:
       'Áo cotton cho bé gái, thiết kế cổ tròn, tay ngắn, dáng rộng thoải mái, phong cách năng động và dễ thương.',
-    price: '190.000',
+    price: 190000,
     image: [p_img25],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -336,7 +336,7 @@ export const products = [
     name: 'Áo khoác denim nữ khóa cài dáng relaxed',
     description:
       'Áo khoác denim nữ thiết kế dáng relaxed, chất liệu jean mềm, khóa cài phía trước, phù hợp phối đồ casual hằng ngày.',
-    price: '220.000',
+    price: 220000,
     image: [p_img26],
     category: 'Women',
     subCategory: 'Winterwear',
@@ -349,7 +349,7 @@ export const products = [
     name: 'Đầm bé gái cổ tròn họa tiết hoa',
     description:
       'Đầm dành cho bé gái thiết kế cổ tròn, tay dài nhẹ, họa tiết hoa tươi sáng, mang phong cách dễ thương và nữ tính.',
-    price: '200.000',
+    price: 200000,
     image: [p_img27],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -362,7 +362,7 @@ export const products = [
     name: 'Áo khoác phao nam dáng slim',
     description:
       'Áo khoác phao nam dáng slim, thiết kế giữ ấm tốt, form gọn gàng, phù hợp mặc trong thời tiết lạnh và đi chơi hằng ngày.',
-    price: '230.000',
+    price: 230000,
     image: [p_img28],
     category: 'Men',
     subCategory: 'Winterwear',
@@ -375,7 +375,7 @@ export const products = [
     name: 'Áo thun nữ cổ tròn cotton thể thao',
     description:
       'Áo thun nữ cổ tròn chất liệu cotton, thiết kế đơn giản, form vừa vặn, phù hợp mặc thể thao hoặc sinh hoạt hằng ngày.',
-    price: '210.000',
+    price: 210000,
     image: [p_img29],
     category: 'Women',
     subCategory: 'Topwear',
@@ -388,7 +388,7 @@ export const products = [
     name: 'Áo bé gái cổ tròn cotton tay ngắn',
     description:
       'Áo cotton dành cho bé gái, thiết kế cổ tròn, tay ngắn, form thoải mái, phù hợp mặc đi học hoặc vui chơi.',
-    price: '240.000',
+    price: 240000,
     image: [p_img30],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -401,7 +401,7 @@ export const products = [
     name: 'Áo thun nam cổ tròn cotton in logo',
     description:
       'Áo thun nam cổ tròn chất liệu cotton, thiết kế in logo phía trước, form basic, dễ phối với nhiều trang phục khác nhau.',
-    price: '220.000',
+    price: 220000,
     image: [p_img31],
     category: 'Men',
     subCategory: 'Topwear',
@@ -414,7 +414,7 @@ export const products = [
     name: 'Áo thun nam dài tay cổ tròn cotton',
     description:
       'Áo thun nam chất liệu cotton, thiết kế cổ tròn, tay dài, phối màu ngang thân áo, form basic phù hợp mặc hằng ngày.',
-    price: '250.000',
+    price: 250000,
     image: [p_img32],
     category: 'Men',
     subCategory: 'Topwear',
@@ -427,7 +427,7 @@ export const products = [
     name: 'Áo bé gái cổ tròn cotton tay bèo',
     description:
       'Áo cotton dành cho bé gái, thiết kế cổ tròn, tay bèo dễ thương, form thoải mái, phù hợp mặc đi học hoặc đi chơi.',
-    price: '230.000',
+    price: 230000,
     image: [p_img33],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -440,7 +440,7 @@ export const products = [
     name: 'Áo nữ cổ tròn cotton dáng ôm nhẹ',
     description:
       'Áo nữ cổ tròn chất liệu cotton mềm mại, tay ngắn, dáng ôm nhẹ, mang phong cách đơn giản và năng động.',
-    price: '260.000',
+    price: 260000,
     image: [p_img34],
     category: 'Women',
     subCategory: 'Topwear',
@@ -453,7 +453,7 @@ export const products = [
     name: 'Áo khoác nữ thể thao khóa kéo',
     description:
       'Áo khoác nữ phong cách thể thao, thiết kế khóa kéo phía trước, cổ cao, chất liệu co giãn, phù hợp tập luyện và mặc hằng ngày.',
-    price: '240.000',
+    price: 240000,
     image: [p_img35],
     category: 'Women',
     subCategory: 'Winterwear',
@@ -466,7 +466,7 @@ export const products = [
     name: 'Áo khoác phao nữ dáng relaxed',
     description:
       'Áo khoác phao nữ thiết kế dáng relaxed, khóa kéo phía trước, chất liệu giữ ấm tốt, phù hợp mặc trong thời tiết lạnh.',
-    price: '270.000',
+    price: 270000,
     image: [p_img36],
     category: 'Women',
     subCategory: 'Winterwear',
@@ -479,7 +479,7 @@ export const products = [
     name: 'Áo nữ cổ tròn cotton form suông',
     description:
       'Áo nữ chất liệu cotton nhẹ, thiết kế cổ tròn, tay ngắn, form suông thanh lịch, dễ phối đồ đi làm hoặc đi chơi.',
-    price: '260.000',
+    price: 260000,
     image: [p_img37],
     category: 'Women',
     subCategory: 'Topwear',
@@ -492,7 +492,7 @@ export const products = [
     name: 'Áo sơ mi bé trai tay ngắn cotton',
     description:
       'Áo sơ mi dành cho bé trai chất liệu cotton, thiết kế tay ngắn, form thoải mái, dễ phối cùng áo thun và quần jean.',
-    price: '280.000',
+    price: 280000,
     image: [p_img38],
     category: 'Men',
     subCategory: 'Topwear',
@@ -505,7 +505,7 @@ export const products = [
     name: 'Áo sơ mi nam cotton họa tiết',
     description:
       'Áo sơ mi nam chất liệu cotton, thiết kế họa tiết nhỏ, tay dài, form gọn gàng, phù hợp mặc đi làm hoặc dạo phố.',
-    price: '260.000',
+    price: 260000,
     image: [p_img39],
     category: 'Men',
     subCategory: 'Topwear',
@@ -518,7 +518,7 @@ export const products = [
     name: 'Áo khoác denim nam không tay dáng slim',
     description:
       'Áo khoác denim nam thiết kế không tay, dáng slim fit, có khóa kéo phía trước, phong cách năng động, phù hợp phối cùng áo thun.',
-    price: '290.000',
+    price: 290000,
     image: [p_img40],
     category: 'Men',
     subCategory: 'Winterwear',
@@ -531,7 +531,7 @@ export const products = [
     name: 'Áo thun nam cổ tròn cotton in họa tiết',
     description:
       'Áo thun nam cổ tròn chất liệu cotton, tay ngắn, thiết kế in họa tiết dọc thân áo, form basic dễ mặc hằng ngày.',
-    price: '270.000',
+    price: 270000,
     image: [p_img41],
     category: 'Men',
     subCategory: 'Topwear',
@@ -544,7 +544,7 @@ export const products = [
     name: 'Áo thun bé trai cổ tròn cotton in chữ',
     description:
       'Áo thun dành cho bé trai chất liệu cotton thoáng mát, cổ tròn, tay ngắn, thiết kế in chữ năng động.',
-    price: '300.000',
+    price: 300000,
     image: [p_img42],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -557,7 +557,7 @@ export const products = [
     name: 'Quần jean bé dáng tapered slim',
     description:
       'Quần jean cho bé thiết kế dáng tapered slim, cạp chun phía sau, form gọn gàng, dễ vận động và thoải mái khi mặc.',
-    price: '280.000',
+    price: 280000,
     image: [p_img43],
     category: 'Kids',
     subCategory: 'Bottomwear',
@@ -570,7 +570,7 @@ export const products = [
     name: 'Áo khoác nữ khóa kéo dáng relaxed',
     description:
       'Áo khoác nữ thiết kế dáng relaxed, khóa kéo phía trước, form rộng vừa phải, phù hợp mặc khi thời tiết mát.',
-    price: '310.000',
+    price: 310000,
     image: [p_img44],
     category: 'Women',
     subCategory: 'Winterwear',
@@ -583,7 +583,7 @@ export const products = [
     name: 'Áo khoác phao nam dáng slim',
     description:
       'Áo khoác phao nam dáng slim fit, thiết kế giữ ấm tốt, phối màu hiện đại, phù hợp mặc trong thời tiết lạnh.',
-    price: '290.000',
+    price: 290000,
     image: [p_img45],
     category: 'Men',
     subCategory: 'Winterwear',
@@ -596,7 +596,7 @@ export const products = [
     name: 'Áo khoác denim nam dáng slim khóa kéo',
     description:
       'Áo khoác denim nam dáng slim, thiết kế khóa kéo phía trước, form gọn gàng, phù hợp mặc đi làm hoặc đi chơi.',
-    price: '320.000',
+    price: 320000,
     image: [p_img46],
     category: 'Men',
     subCategory: 'Winterwear',
@@ -609,7 +609,7 @@ export const products = [
     name: 'Quần dài bé cạp chun dáng tapered',
     description:
       'Quần dài dành cho trẻ em thiết kế dáng tapered, cạp chun co giãn, chất liệu mềm mại, mang lại sự thoải mái khi vận động.',
-    price: '300.000',
+    price: 300000,
     image: [p_img47],
     category: 'Kids',
     subCategory: 'Bottomwear',
@@ -622,7 +622,7 @@ export const products = [
     name: 'Áo khoác denim nam dáng slim',
     description:
       'Áo khoác denim nam dáng slim fit, thiết kế cổ bẻ, cài nút phía trước, phong cách trẻ trung, dễ phối với áo thun và quần jean.',
-    price: '330.000',
+    price: 330000,
     image: [p_img48],
     category: 'Men',
     subCategory: 'Winterwear',
@@ -635,7 +635,7 @@ export const products = [
     name: 'Quần dài bé dáng tapered slim họa tiết',
     description:
       'Quần dài dành cho trẻ em thiết kế dáng tapered slim, họa tiết chấm nhỏ, form gọn gàng, phù hợp mặc hằng ngày.',
-    price: '310.000',
+    price: 310000,
     image: [p_img49],
     category: 'Kids',
     subCategory: 'Bottomwear',
@@ -648,7 +648,7 @@ export const products = [
     name: 'Quần dài bé cạp chun dáng tapered',
     description:
       'Quần dài cho trẻ em thiết kế dáng tapered, cạp chun kèm dây buộc, chất liệu nhẹ, thoải mái cho vận động.',
-    price: '340.000',
+    price: 340000,
     image: [p_img50],
     category: 'Kids',
     subCategory: 'Bottomwear',
@@ -661,7 +661,7 @@ export const products = [
     name: 'Áo khoác nữ khóa kéo dáng relaxed',
     description:
       'Áo khoác nữ thiết kế dáng relaxed, khóa kéo phía trước, form gọn gàng, phù hợp mặc khi thời tiết mát.',
-    price: '320.000',
+    price: 320000,
     image: [p_img51],
     category: 'Women',
     subCategory: 'Winterwear',
@@ -674,7 +674,7 @@ export const products = [
     name: 'Áo thun nam cổ tròn cotton trơn',
     description:
       'Áo thun nam cổ tròn chất liệu cotton mềm mại, tay ngắn, thiết kế trơn đơn giản, dễ mặc và dễ phối đồ.',
-    price: '200.000',
+    price: 200000,
     image: [p_img2_1, p_img2_2, p_img2_3, p_img2_4],
     category: 'Men',
     subCategory: 'Topwear',
@@ -687,7 +687,7 @@ export const products = [
     name: 'Áo khoác denim nam dáng slim khóa cài',
     description:
       'Áo khoác denim nam dáng slim, thiết kế cài nút phía trước, form gọn gàng, phù hợp mặc đi chơi hoặc dạo phố.',
-    price: '350.000',
+    price: 350000,
     image: [p_img52],
     category: 'Men',
     subCategory: 'Winterwear',
@@ -700,7 +700,7 @@ export const products = [
     name: 'Đầm bé gái cổ tròn họa tiết hoa',
     description:
       'Đầm dành cho bé gái thiết kế cổ tròn, tay dài nhẹ, họa tiết hoa tươi sáng, phong cách dễ thương và nữ tính.',
-    price: '220.000',
+    price: 220000,
     image: [p_img3],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -713,7 +713,7 @@ export const products = [
     name: 'Áo thun nam cổ tròn cotton in logo',
     description:
       'Áo thun nam cổ tròn chất liệu cotton, thiết kế in logo phía trước, form basic, phù hợp mặc hằng ngày.',
-    price: '110.000',
+    price: 110000,
     image: [p_img4],
     category: 'Men',
     subCategory: 'Topwear',
@@ -726,7 +726,7 @@ export const products = [
     name: 'Áo thun nữ cổ tròn cotton thể thao',
     description:
       'Áo thun nữ cổ tròn chất liệu cotton, thiết kế dáng ôm vừa, phong cách thể thao, phù hợp tập luyện hoặc mặc thường ngày.',
-    price: '130.000',
+    price: 130000,
     image: [p_img5],
     category: 'Women',
     subCategory: 'Topwear',
@@ -739,7 +739,7 @@ export const products = [
     name: 'Áo bé gái cổ tròn cotton tay ngắn',
     description:
       'Áo cotton dành cho bé gái, thiết kế cổ tròn, tay ngắn, form thoải mái, phù hợp mặc đi học hoặc vui chơi.',
-    price: '140.000',
+    price: 140000,
     image: [p_img6],
     category: 'Kids',
     subCategory: 'Topwear',
@@ -752,7 +752,7 @@ export const products = [
     name: 'Quần dài nam dáng tapered slim',
     description:
       'Quần dài nam thiết kế dáng tapered slim, form gọn gàng, chất liệu bền đẹp, phù hợp mặc đi làm hoặc đi chơi.',
-    price: '190.000',
+    price: 190000,
     image: [p_img7],
     category: 'Men',
     subCategory: 'Bottomwear',
@@ -765,7 +765,7 @@ export const products = [
     name: 'Áo thun nam dài tay cổ tròn cotton',
     description:
       'Áo thun nam cổ tròn tay dài, chất liệu cotton, thiết kế phối màu ngang thân áo, phong cách trẻ trung và năng động.',
-    price: '140.000',
+    price: 140000,
     image: [p_img8],
     category: 'Men',
     subCategory: 'Topwear',
