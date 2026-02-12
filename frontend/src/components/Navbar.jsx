@@ -8,7 +8,7 @@ const Navbar = () => {
   const [visible, setVisible] = useState(false);
   const { setShowSearch, getCartCount } = useContext(ShopContext);
   return (
-    <div className='flex items-center justify-between py-5 font-medium'>
+    <div className='sticky top-0 z-50 bg-white/80 backdrop-blur-sm flex items-center justify-between py-5 font-medium'>
       <Link to='/'>
         <img src={assets.logo_img} className='w-36 cursor-pointer' alt='logo' />
       </Link>
@@ -36,7 +36,9 @@ const Navbar = () => {
         <FiSearch onClick={() => setShowSearch(true)} className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
 
         <div className='group relative'>
-          <FiUser className='w-6 h-6 cursor-pointer hover:text-red-500 transition' />
+          <Link to='/login'>
+            <FiUser className='w-6 h-6 cursor-pointer hover:text-red-500 transition' />
+          </Link>
 
           <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50'>
             <div className='flex flex-col gap-2 w-38 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
