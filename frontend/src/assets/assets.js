@@ -69,6 +69,7 @@ import star_icon from './star_icon.png';
 import support_img from './support_img.png';
 import menu_icon from './menu_icon.png';
 import about_img from './about_img.png';
+import about_img1 from './about_img1.png';
 import contact_img from './contact_img.png';
 import cross_icon from './cross_icon.png';
 import momo_logo from './momo_logo.png';
@@ -91,6 +92,7 @@ export const assets = {
   support_img,
   menu_icon,
   about_img,
+  about_img1,
   contact_img,
   cross_icon,
   momo_logo,

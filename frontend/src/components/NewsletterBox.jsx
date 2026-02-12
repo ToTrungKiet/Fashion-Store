@@ -12,7 +12,7 @@ const NewsletterBox = () => {
       <p className='text-gray-400 mt-3'>Đăng ký nhanh chóng để nhận ưu đãi đặc biệt và cập nhật các sản phẩm mới nhất.</p>
       <form onSubmit={onSubmitHandler} className='w-full sm:w-1/2 flex items-center gap-3 mx-auto my-6 border pl-3'>
         <input type='email' placeholder='Nhập email của bạn' className='w-full sm:flex-1 outline-none' required/>
-        <button type='submit' className='bg-red-500 hover:bg-red-600 text-white md:text-sm text-xs px-10 py-4 cursor-pointer tracking-wide'>ĐĂNG KÝ</button>
+        <button type='submit' className='bg-rose-500 hover:bg-rose-600 text-white md:text-sm text-xs px-10 py-4 cursor-pointer tracking-wide'>ĐĂNG KÝ</button>
       </form>
     </div>
   )
