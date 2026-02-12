@@ -57,7 +57,7 @@ const Cart = () => {
         <div className='w-full sm:w-[450px]'>
           <CartTotal />
           <div className='w-full text-end'>
-            <button onClick={() => navigate('/place-order')} className='bg-rose-500 hover:bg-rose-600 text-white my-8 px-8 py-3 text-sm active:bg-rose-700 cursor-pointer'>
+            <button onClick={() => navigate('/place-order')} className='bg-rose-500 hover:bg-rose-600 text-white rounded-full my-8 px-8 py-3 text-sm active:bg-rose-700 cursor-pointer'>
               TIẾN HÀNH THANH TOÁN
             </button>
           </div>
