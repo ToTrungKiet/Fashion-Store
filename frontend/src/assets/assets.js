@@ -72,6 +72,7 @@ import about_img from './about_img.png';
 import contact_img from './contact_img.png';
 import cross_icon from './cross_icon.png';
 import momo_logo from './momo_logo.png';
+import momo_logo1 from './momo_logo1.png';
 import zalopay_logo from './zalopay_logo.png';
 
 export const assets = {
@@ -93,6 +94,7 @@ export const assets = {
   contact_img,
   cross_icon,
   momo_logo,
+  momo_logo1,
   zalopay_logo,
 };
 
