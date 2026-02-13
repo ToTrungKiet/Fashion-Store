@@ -9,25 +9,30 @@ const PlaceOrder = () => {
   const [method, setMethod] = useState('cod')
   const { navigate } = useContext(ShopContext)
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate('/orders');
+  };
+
   return (
-    <div className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t'>
+    <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t'>
       {/* BÊN TRÁI */}
       <div className='flex flex-col gap-4 w-full sm:max-w-[480px]'>
         <div className='text-xl sm:text-2xl my-3'>
           <Title text1={'THÔNG TIN'} text2={'GIAO HÀNG'} />
         </div>
         <div className='flex gap-3'>
-          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Họ' />
-          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Tên' />
+          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Họ' required />
+          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Tên' required />
         </div>
         <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='email' placeholder='Email' />
-        <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Số nhà, tên đường' />
+        <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Số nhà, tên đường' required />
         <div className='flex gap-3'>
-          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Phường/Xã' />
-          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Quận/Huyện' />
+          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Phường/Xã' required />
+          <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Quận/Huyện' required />
         </div>
-        <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Tỉnh/Thành phố' />
-        <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='tel' placeholder='Sô điện thoại' />
+        <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Tỉnh/Thành phố' required />
+        <input className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='tel' placeholder='Sô điện thoại' pattern='0[0-9]{10}' required />
       </div>
       {/* BÊN PHẢI */}
       <div className='mt-8'>
@@ -52,11 +57,11 @@ const PlaceOrder = () => {
             </div>
           </div>
           <div className='w-full text-end mt-8'>
-          <button onClick={() => navigate('/orders')} className='bg-rose-500 hover:bg-rose-600 text-white px-16 py-3 text-sm active:bg-rose-700 cursor-pointer'>ĐẶT HÀNG</button>
+            <button type='submit' className='bg-rose-500 hover:bg-rose-600 rounded-full text-white px-16 py-3 text-sm active:bg-rose-700 cursor-pointer'>ĐẶT HÀNG</button>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 
