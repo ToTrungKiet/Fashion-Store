@@ -3,6 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import database from './config/mongodb.js'
 import cloudinaryService from './config/cloudinary.js'
+import userRouter from './routes/userRoute.js'
 
 class Server {
     constructor () {
@@ -25,6 +26,7 @@ class Server {
     }
 
     configRoutes() {
+        this.app.use('/api/user', userRouter)
         this.app.get('/', (req, res) => {
             res.json('API đang hoạt động !')
         })
