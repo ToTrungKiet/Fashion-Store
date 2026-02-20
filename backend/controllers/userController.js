@@ -88,7 +88,21 @@ class UserController {
   }
 
   // Route đăng nhập quản trị viên
-  async adminLogin(req, res) {}
+  async adminLogin(req, res) {
+    try {
+      const { email, password } = req.body;
+
+      if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+        const token = jwt.sign(email+password, process.env.JWT_SECRET);
+        res.status(200).json({ success: true, token });
+      } else {
+        res.status(401).json({ success: false, message: "Thông tin đăng nhập không đúng !" });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
 }
 
 export default new UserController();
