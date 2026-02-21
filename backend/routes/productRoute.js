@@ -12,8 +12,8 @@ const uploadFields = upload.fields([
     { name: 'image4', maxCount: 1 }
 ]);
 
-productRouter.post('/add', adminAuth, uploadFields, ProductController.addProduct)
-productRouter.post('/remove', adminAuth, ProductController.removeProduct)
+productRouter.post('/add', adminAuth.authenticate, uploadFields, ProductController.addProduct)
+productRouter.post('/remove', adminAuth.authenticate, ProductController.removeProduct)
 productRouter.post('/single', ProductController.singleProduct)
 productRouter.get('/list', ProductController.listProducts)
 
