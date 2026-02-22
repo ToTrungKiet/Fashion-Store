@@ -61,7 +61,7 @@ const Collection = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [category, subcategory, search, showSearch]);
+  }, [category, subcategory, search, showSearch, products]);
 
   useEffect(() => {
     sortProduct();
@@ -81,13 +81,13 @@ const Collection = () => {
           <p className='mb-3 text-sm font-medium'>DANH MỤC</p>
           <div className='flex flex-col gap-2 text-sm font-light text-gray-700'>
             <p className='flex gap-2'>
-              <input className='w-3 accent-rose-600' type='checkbox' value={'Men'} onChange={toggleCategory}/> Nam
+              <input className='w-3 accent-rose-600' type='checkbox' value={'Nam'} onChange={toggleCategory}/> Nam
             </p>
             <p className='flex gap-2'>
-              <input className='w-3 accent-rose-600' type='checkbox' value={'Women'} onChange={toggleCategory}/> Nữ
+              <input className='w-3 accent-rose-600' type='checkbox' value={'Nữ'} onChange={toggleCategory}/> Nữ
             </p>
             <p className='flex gap-2'>
-              <input className='w-3 accent-rose-600' type='checkbox' value={'Kids'} onChange={toggleCategory}/> Trẻ em
+              <input className='w-3 accent-rose-600' type='checkbox' value={'Trẻ em'} onChange={toggleCategory}/> Trẻ em
             </p>
           </div>
         </div>
@@ -96,13 +96,13 @@ const Collection = () => {
           <p className='mb-3 text-sm font-medium'>LOẠI SẢN PHẨM</p>
           <div className='flex flex-col gap-2 text-sm font-light text-gray-700'>
             <p className='flex gap-2'>
-              <input className='w-3' type='checkbox' value={'Topwear'} onChange={toggleSubCategory}/> Áo 
+              <input className='w-3' type='checkbox' value={'Áo'} onChange={toggleSubCategory}/> Áo 
             </p>
             <p className='flex gap-2'>
-              <input className='w-3' type='checkbox' value={'Bottomwear'} onChange={toggleSubCategory}/> Quần 
+              <input className='w-3' type='checkbox' value={'Quần'} onChange={toggleSubCategory}/> Quần 
             </p>
             <p className='flex gap-2'>
-              <input className='w-3' type='checkbox' value={'Winterwear'} onChange={toggleSubCategory}/> Áo khoác
+              <input className='w-3' type='checkbox' value={'Áo khoác'} onChange={toggleSubCategory}/> Áo khoác
             </p>
           </div>
         </div>
