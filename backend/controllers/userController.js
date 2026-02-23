@@ -16,7 +16,7 @@ class UserController {
       // Kiểm tra xem người dùng có tồn tại trong Database hay không
       const user = await userModel.findOne({ email });
       if (!user) {
-        return res.status(404).json({
+        return res.json({
           success: false,
           message: "Người dùng không tồn tại !",
         });
@@ -26,9 +26,9 @@ class UserController {
       const isMatch = await bcrypt.compare(password, user.password);
       if(isMatch) {
         const token = createToken(user._id);
-        res.status(200).json({ success: true, token });
+        res.json({ success: true, message: 'Đăng nhập thành công !', token });
       } else {
-        res.status(401).json({ success: false, message: "Mật khẩu không đúng !" });
+        res.json({ success: false, message: "Mật khẩu không đúng !" });
       }
 
     } catch (error) {
@@ -44,7 +44,7 @@ class UserController {
 
       const exists = await userModel.findOne({ email });
       if (exists) {
-        return res.status(409).json({
+        return res.json({
           success: false,
           message: "Người dùng này đã tồn tại !",
         });
@@ -52,7 +52,7 @@ class UserController {
 
       // Kiểm tra định dạng email và mật khẩu mạnh
       if (!validator.isEmail(email)) {
-        return res.status(400).json({
+        return res.json({
           success: false,
           message: "Vui lòng nhập Email hợp lệ !",
         });
@@ -60,7 +60,7 @@ class UserController {
       const strongPassword =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
       if (!strongPassword.test(password)) {
-        return res.status(400).json({
+        return res.json({
           success: false,
           message:
             "Mật khẩu ít nhất 8 ký tự, phải có chữ hoa, chữ thường, số và ký tự đặc biệt !",
@@ -80,7 +80,7 @@ class UserController {
 
       const token = createToken(user._id);
 
-      res.status(201).json({ success: true, token });
+      res.json({ success: true, message: 'Đăng ký thành công !' ,token });
     } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: error.message });
@@ -94,9 +94,9 @@ class UserController {
 
       if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
         const token = jwt.sign(email+password, process.env.JWT_SECRET);
-        res.status(200).json({ success: true, token });
+        res.json({ success: true, message: 'Đăng nhập quản trị viên thành công !', token });
       } else {
-        res.status(401).json({ success: false, message: "Thông tin đăng nhập không đúng !" });
+        res.json({ success: false, message: "Thông tin đăng nhập không đúng !" });
       }
     } catch (error) {
       console.log(error);
