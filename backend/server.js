@@ -5,6 +5,7 @@ import database from './config/mongodb.js'
 import cloudinaryService from './config/cloudinary.js'
 import userRouter from './routes/userRoute.js'
 import productRouter from './routes/productRoute.js'
+import cartRouter from './routes/cartRoute.js'
 
 class Server {
     constructor () {
@@ -29,6 +30,7 @@ class Server {
     configRoutes() {
         this.app.use('/api/user', userRouter)
         this.app.use('/api/product', productRouter)
+        this.app.use('/api/cart', cartRouter)
 
         this.app.get('/', (req, res) => {
             res.json('API đang hoạt động !')

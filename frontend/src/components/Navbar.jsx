@@ -6,7 +6,15 @@ import { FiSearch, FiUser, FiShoppingBag } from "react-icons/fi";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const { setShowSearch, getCartCount } = useContext(ShopContext);
+  const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems } = useContext(ShopContext);
+
+  const logout = () => {
+    navigate('/login');
+    localStorage.removeItem('token');
+    setToken('');
+    setCartItems({});
+  }
+
   return (
     <div className='sticky top-0 z-50 bg-white/80 backdrop-blur-sm flex items-center justify-between py-5 font-medium'>
       <Link to='/'>
@@ -36,17 +44,18 @@ const Navbar = () => {
         <FiSearch onClick={() => setShowSearch(true)} className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
 
         <div className='group relative'>
-          <Link to='/login'>
-            <FiUser className='w-6 h-6 cursor-pointer hover:text-red-500 transition' />
-          </Link>
+          <FiUser onClick={() => token ? null : navigate('/login')} className='w-6 h-6 cursor-pointer hover:text-red-500 transition' />
 
-          <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50'>
-            <div className='flex flex-col gap-2 w-38 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
-              <p className='cursor-pointer hover:text-red-500'>Hồ sơ của tôi</p>
-              <p className='cursor-pointer hover:text-red-500'>Đơn hàng</p>
-              <p className='cursor-pointer hover:text-red-500'>Đăng xuất</p>
+          {
+            token && 
+            <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50'>
+              <div className='flex flex-col gap-2 w-38 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
+                <p className='cursor-pointer hover:text-red-500'>Hồ sơ của tôi</p>
+                <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-red-500'>Đơn hàng</p>
+                <p onClick={logout} className='cursor-pointer hover:text-red-500'>Đăng xuất</p>
+              </div>
             </div>
-          </div>
+          }
         </div>
 
         <Link to='/cart' className='relative'>
