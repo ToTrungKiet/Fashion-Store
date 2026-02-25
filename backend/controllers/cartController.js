@@ -1,6 +1,4 @@
-import { v2 as cloudinary } from 'cloudinary'
 import userModel from '../models/userModel.js';
-// import cartModel from '../models/cartModel.js';
 
 
 class CartController {

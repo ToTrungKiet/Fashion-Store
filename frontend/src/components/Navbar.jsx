@@ -16,66 +16,67 @@ const Navbar = () => {
   }
 
   return (
-    <div className='sticky top-0 z-50 bg-white/80 backdrop-blur-sm flex items-center justify-between py-5 font-medium'>
-      <Link to='/'>
-        <img src={assets.logo_img} className='w-36 cursor-pointer' alt='logo' />
-      </Link>
-
-      <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>
-        <NavLink to='/' className='flex flex-col items-center gap-1'>
-          <p className='transition hover:text-red-400'>TRANG CHỦ</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
-        </NavLink>
-        <NavLink to='/collection' className='flex flex-col items-center gap-1'>
-          <p className='transition hover:text-red-400'>BỘ SƯU TẬP</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
-        </NavLink>
-        <NavLink to='/about' className='flex flex-col items-center gap-1'>
-          <p className='transition hover:text-red-400'>GIỚI THIỆU</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
-        </NavLink>
-        <NavLink to='/contact' className='flex flex-col items-center gap-1'>
-          <p className='transition hover:text-red-400'>LIÊN HỆ</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
-        </NavLink>
-      </ul>
-
-      <div className='flex items-center gap-6'>
-        <FiSearch onClick={() => setShowSearch(true)} className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
-
-        <div className='group relative'>
-          <FiUser onClick={() => token ? null : navigate('/login')} className='w-6 h-6 cursor-pointer hover:text-red-500 transition' />
-
-          {
-            token && 
-            <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50'>
-              <div className='flex flex-col gap-2 w-38 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
-                <p className='cursor-pointer hover:text-red-500'>Hồ sơ của tôi</p>
-                <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-red-500'>Đơn hàng</p>
-                <p onClick={logout} className='cursor-pointer hover:text-red-500'>Đăng xuất</p>
-              </div>
-            </div>
-          }
-        </div>
-
-        <Link to='/cart' className='relative'>
-          <FiShoppingBag className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
-          <p className='absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]'>
-            {getCartCount()}
-          </p>
+    <>
+      <div className='sticky top-0 z-50 bg-white/80 backdrop-blur-sm flex items-center justify-between py-5 font-medium'>
+        <Link to='/'>
+          <img src={assets.logo_img} className='w-36 cursor-pointer' alt='logo' />
         </Link>
 
-        <img
-          onClick={() => setVisible(true)}
-          src={assets.menu_icon}
-          className='w-5 cursor-pointer sm:hidden'
-          alt='menu_icon'
-        />
-      </div>
+        <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>
+          <NavLink to='/' className='flex flex-col items-center gap-1'>
+            <p className='transition hover:text-red-400'>TRANG CHỦ</p>
+            <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
+          </NavLink>
+          <NavLink to='/collection' className='flex flex-col items-center gap-1'>
+            <p className='transition hover:text-red-400'>BỘ SƯU TẬP</p>
+            <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
+          </NavLink>
+          <NavLink to='/about' className='flex flex-col items-center gap-1'>
+            <p className='transition hover:text-red-400'>GIỚI THIỆU</p>
+            <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
+          </NavLink>
+          <NavLink to='/contact' className='flex flex-col items-center gap-1'>
+            <p className='transition hover:text-red-400'>LIÊN HỆ</p>
+            <hr className='w-2/4 border-none h-[1.5px] bg-red-600' />
+          </NavLink>
+        </ul>
 
+        <div className='flex items-center gap-6'>
+          <FiSearch onClick={() => setShowSearch(true)} className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
+
+          <div className='group relative'>
+            <FiUser onClick={() => token ? null : navigate('/login')} className='w-6 h-6 cursor-pointer hover:text-red-500 transition' />
+
+            {
+              token &&
+              <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50'>
+                <div className='flex flex-col gap-2 w-38 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
+                  <p className='cursor-pointer hover:text-red-500'>Hồ sơ của tôi</p>
+                  <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-red-500'>Đơn hàng</p>
+                  <p onClick={logout} className='cursor-pointer hover:text-red-500'>Đăng xuất</p>
+                </div>
+              </div>
+            }
+          </div>
+
+          <Link to='/cart' className='relative'>
+            <FiShoppingBag className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
+            <p className='absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]'>
+              {getCartCount()}
+            </p>
+          </Link>
+
+          <img
+            onClick={() => setVisible(true)}
+            src={assets.menu_icon}
+            className='w-5 cursor-pointer sm:hidden'
+            alt='menu_icon'
+          />
+        </div>
+      </div>
       {/* Menu dành cho màn hình nhỏ */}
       <div
-        className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${visible ? 'w-full' : 'w-0'} z-50`}
+        className={`fixed top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${visible ? 'w-full' : 'w-0'} z-50`}
       >
         <div className='flex flex-col text-gray-600'>
           <div
@@ -119,7 +120,7 @@ const Navbar = () => {
           </NavLink>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
