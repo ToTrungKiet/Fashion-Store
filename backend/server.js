@@ -6,6 +6,7 @@ import cloudinaryService from './config/cloudinary.js'
 import userRouter from './routes/userRoute.js'
 import productRouter from './routes/productRoute.js'
 import cartRouter from './routes/cartRoute.js'
+import orderRouter from './routes/orderRoute.js'
 
 class Server {
     constructor () {
@@ -31,6 +32,7 @@ class Server {
         this.app.use('/api/user', userRouter)
         this.app.use('/api/product', productRouter)
         this.app.use('/api/cart', cartRouter)
+        this.app.use('/api/order', orderRouter)
 
         this.app.get('/', (req, res) => {
             res.json('API đang hoạt động !')
