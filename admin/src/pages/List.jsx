@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom'
 import { backendUrl, currency, formatPrice } from '../App'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -6,6 +7,7 @@ import { toast } from 'react-toastify'
 const List = ({token}) => {
 
   const [list, setList] = useState([])
+  const navigate = useNavigate()
 
   const fetchList = async () => {
     try {
@@ -42,7 +44,7 @@ const List = ({token}) => {
 
   return (
     <>
-      <p className='mb-3 font-bold text-xl'>Danh sách tất cả sản phẩm</p>
+      <p className='text-2xl font-bold mb-6 text-gray-800'>Danh sách tất cả sản phẩm</p>
       <div className='flex flex-col gap-2'>
         {/* Danh sách tiêu đề bảng */}
         <div className='hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center py-1 px-2 border bg-gray-100 text-sm'>
@@ -60,7 +62,10 @@ const List = ({token}) => {
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>{formatPrice(item.price)} {currency}</p>
-              <p onClick={() => removeProduct(item._id)} className='text-right md:text-center cursor-pointer text-lg'>X</p>
+              <div className='flex justify-end md:justify-center gap-2'>
+                <span onClick={() => removeProduct(item._id)} className='cursor-pointer text-lg'>X</span>
+                <span onClick={() => navigate(`/edit/${item._id}`)} className='cursor-pointer text-lg'>✎</span>
+              </div>
             </div>
           ))
         }

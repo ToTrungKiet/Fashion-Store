@@ -13,6 +13,7 @@ const uploadFields = upload.fields([
 ]);
 
 productRouter.post('/add', adminAuth.authenticate, uploadFields, ProductController.addProduct)
+productRouter.post('/update', adminAuth.authenticate, uploadFields, ProductController.updateProduct)
 productRouter.post('/remove', adminAuth.authenticate, ProductController.removeProduct)
 productRouter.post('/single', ProductController.singleProduct)
 productRouter.get('/list', ProductController.listProducts)

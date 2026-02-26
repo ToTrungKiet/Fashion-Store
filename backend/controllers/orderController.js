@@ -77,7 +77,9 @@ class OrderController {
   // Route cập nhật trạng thái đơn hàng (dành cho admin)
   async updateStatus(req, res) {
     try {
-
+      const { orderId, status } = req.body
+      await orderModel.findByIdAndUpdate(orderId, {status})
+      res.json({success: true, message: 'Trạng thái đã được cập nhật !'})
     } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: error.message });

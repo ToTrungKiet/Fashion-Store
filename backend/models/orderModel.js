@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   items: { type: Array, required: true },
   amount: { type: Number, required: true },
   address: { type: Object, required: true },
-  status: { type: String, required: true, default: 'Đang chuẩn bị đơn hàng !' },
+  status: { type: String, required: true, default: 'Đơn hàng đã đặt' },
   paymentMethod: { type: String, required: true },
   payment: { type: Boolean, required: true, default: false }
 }, 
