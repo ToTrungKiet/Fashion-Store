@@ -83,6 +83,49 @@ class ProductController {
       res.status(500).json({ success: false, message: error.message });
     }
   }
+
+  // Route cập nhật sản phẩm
+  async updateProduct(req, res) {
+    try {
+      const { id, name, description, price, category, subCategory, sizes, bestseller } = req.body;
+      const product = await productModel.findById(id);
+      if (!product) {
+        return res.status(404).json({ message: 'Không tìm thấy sản phẩm !' });
+      }
+
+      // Cập nhật trường cơ bản
+      if (name) product.name = name;
+      if (description) product.description = description;
+      if (price) product.price = Number(price);
+      if (category) product.category = category;
+      if (subCategory) product.subCategory = subCategory;
+      if (typeof bestseller !== 'undefined') product.bestseller = bestseller === 'true' ? true : false;
+      if (sizes) product.sizes = JSON.parse(sizes);
+
+      // Xử lý hình ảnh mới nếu có
+      const image1 = req.files.image1?.[0];
+      const image2 = req.files.image2?.[0];
+      const image3 = req.files.image3?.[0];
+      const image4 = req.files.image4?.[0];
+      const images = [image1, image2, image3, image4].filter((item) => item != undefined);
+      if (images.length) {
+        let imagesUrl = await Promise.all(
+          images.map(async (item) => {
+            let result = await cloudinary.uploader.upload(item.path, { resource_type: 'image' });
+            return result.secure_url;
+          })
+        );
+        // nếu gửi hình mới thì ghi đè toàn bộ mảng ảnh
+        product.image = imagesUrl;
+      }
+
+      await product.save();
+      res.json({ success: true, message: 'Cập nhật sản phẩm thành công !', product });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
 }
 
 export default new ProductController();

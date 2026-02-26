@@ -20,7 +20,7 @@ const Login = ({setToken}) => {
         
     } catch (error) {
         console.log('Error:', error.response?.data || error.message);
-        alert(error.response?.data?.message || 'Lỗi kết nối');
+        toast.error(response?.data?.message || 'Lỗi kết nối');
     }
 }
 

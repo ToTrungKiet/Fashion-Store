@@ -3,6 +3,7 @@ import Navbar from './components/Navbar.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import { Routes, Route } from 'react-router-dom'
 import Add from './pages/Add.jsx'
+import Edit from './pages/Edit.jsx'
 import List from './pages/List.jsx'
 import Orders from './pages/Orders.jsx'
 import Login from './pages/Login.jsx'
@@ -36,6 +37,7 @@ function App() {
               <Routes>
                 <Route path='/add' element={<Add token={token} />} />
                 <Route path='/list' element={<List token={token} />} />
+                <Route path='/edit/:id' element={<Edit token={token} />} />
                 <Route path='/orders' element={<Orders token={token} />} />
               </Routes>
             </div>
