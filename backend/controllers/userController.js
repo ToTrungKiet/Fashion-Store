@@ -50,6 +50,29 @@ class UserController {
         });
       }
 
+      // Kiểm tra tên người dùng (username): độ dài và ký tự hợp lệ
+      // giới hạn từ 3 đến 30 ký tự và chỉ bao gồm chữ và số
+      if (!name || typeof name !== 'string' || name.trim().length === 0) {
+        return res.json({
+          success: false,
+          message: "Vui lòng nhập tên người dùng !",
+        });
+      }
+      const username = name.trim();
+      if (username.length < 3 || username.length > 30) {
+        return res.json({
+          success: false,
+          message: "Tên người dùng phải từ 3 đến 30 ký tự !",
+        });
+      }
+      const usernameRegex = /^[a-zA-Z]+$/;
+      if (!usernameRegex.test(username)) {
+        return res.json({
+          success: false,
+          message: "Tên người dùng chỉ được chứa chữ cái !",
+        });
+      }
+
       // Kiểm tra định dạng email và mật khẩu mạnh
       if (!validator.isEmail(email)) {
         return res.json({
