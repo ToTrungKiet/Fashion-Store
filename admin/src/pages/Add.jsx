@@ -60,6 +60,7 @@ const Add = ({token}) => {
   return (
     <div>
       <form onSubmit={onSubmitHandler} className='flex flex-col w-full items-start gap-3'>
+        <p className='text-2xl font-bold mb-3 text-gray-800'>Thêm sản phẩm</p>
         <div>
           <p className='mb-2'>Tải hình ảnh</p>
           <div className='flex gap-4'>

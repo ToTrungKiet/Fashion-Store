@@ -4,8 +4,10 @@ import order_icon from './order_icon.png'
 import upload_area from './upload_area.png'
 import parcel_icon from './parcel_icon.svg'
 import logo_img from './vectorstock_33654093.png';
+import dashboard_icon from './dashboard-icon.png'
 
 export const assets = {
+    dashboard_icon,
     logo_img,
     logo,
     add_icon,
