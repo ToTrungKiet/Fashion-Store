@@ -27,6 +27,11 @@ const Cart = () => {
     }
   }, [cartItems, products])
 
+  const totalAmount = cartData.reduce((total, item) => {
+  const product = products.find(p => p._id === item._id);
+  return total + (product ? product.price * item.quantity : 0);
+}, 0);
+
   return (
     <div className='border-t pt-14'>
       <div className='text-2xl mb-3'>
@@ -59,7 +64,11 @@ const Cart = () => {
         <div className='w-full sm:w-[450px]'>
           <CartTotal />
           <div className='w-full text-end'>
-            <button onClick={() => navigate('/place-order')} className='bg-rose-500 hover:bg-rose-600 text-white rounded-full my-8 px-8 py-3 text-sm active:bg-rose-700 cursor-pointer'>
+            <button onClick={() => {
+              if (totalAmount === 0) return;
+              navigate('/place-order')}} 
+              disabled={totalAmount === 0}
+              className='bg-rose-500 hover:bg-rose-600 text-white rounded-full my-8 px-8 py-3 text-sm active:bg-rose-700 cursor-pointer'>
               TIẾN HÀNH THANH TOÁN
             </button>
           </div>

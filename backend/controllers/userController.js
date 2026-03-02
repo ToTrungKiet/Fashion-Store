@@ -103,7 +103,7 @@ class UserController {
 
       const token = createToken(user._id);
 
-      res.json({ success: true, message: 'Đăng ký thành công !' ,token });
+      res.json({ success: true, message: 'Đăng ký thành công !', token });
     } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: error.message });
