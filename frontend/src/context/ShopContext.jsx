@@ -89,7 +89,7 @@ const ShopContextProvider = (props) => {
             totalAmount += itemInfo.price * cartItems[items][item];
           }
         } catch (e) {
-
+          console.log(e)
         }
       }
     }

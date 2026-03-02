@@ -19,7 +19,7 @@ const CartTotal = () => {
         <hr />
         <div className='flex justify-between'>
             <p>PHÍ VẬN CHUYỂN</p>
-            <p>{formatPrice(delivery_fee)} {currency}</p>
+            {getCartAmount() === 0 ? '0 VND' : <p>{formatPrice(delivery_fee)} {currency}</p>}
         </div>
         <hr />
         <div className='flex justify-between'>
