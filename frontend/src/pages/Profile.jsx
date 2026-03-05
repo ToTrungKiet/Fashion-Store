@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-
+import { toast } from "react-toastify";
+import { ShopContext } from "../context/ShopContext";
 const Profile = () => {
-
+  const { token } = useContext(ShopContext);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -22,11 +23,11 @@ const Profile = () => {
   const loadProfile = async () => {
     try {
 
-      const userId = localStorage.getItem("userId");
+      if (token) {
 
       const res = await axios.post(
         "http://localhost:4000/api/user/profile",
-        { userId }
+        { headers:{token} }
       );
 
       if (res.data.success) {
@@ -45,6 +46,7 @@ const Profile = () => {
         });
 
       }
+    }
 
     } catch (error) {
 
@@ -63,33 +65,35 @@ const Profile = () => {
 
     try {
 
-      const userId = localStorage.getItem("userId");
+      if(token) {
 
       const res = await axios.post(
         "http://localhost:4000/api/user/update-profile",
         {
-          userId,
+          
           ...form
-        }
+        },
+        { headers:{token} }
       );
 
       if (res.data.success) {
 
-        alert("Lưu thông tin thành công!");
+        toast.success("Lưu thông tin thành công!");
 
         // load lại dữ liệu mới
         loadProfile();
 
       } else {
 
-        alert(res.data.message);
+        toast.error(res.data.message);
 
       }
+    }
 
     } catch (error) {
 
       console.log(error);
-      alert("Có lỗi xảy ra");
+      toast.error("Có lỗi xảy ra");
 
     }
 

@@ -29,8 +29,7 @@ class UserController {
         res.json({
           success: true,
           message: "Đăng nhập thành công !",
-          token,
-          userId: user._id
+          token
         });
       } else {
         res.json({ success: false, message: "Mật khẩu không đúng !" });

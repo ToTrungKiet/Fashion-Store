@@ -19,7 +19,9 @@ const Login = () => {
 
     try {
 
+      // ======================
       // ĐĂNG KÝ
+      // ======================
       if (currentState === 'Đăng ký') {
 
         const response = await axios.post(
@@ -35,11 +37,6 @@ const Login = () => {
 
           localStorage.setItem('token', response.data.token)
 
-          // nếu backend trả userId
-          if (response.data.userId) {
-            localStorage.setItem('userId', response.data.userId)
-          }
-
           setName('')
           setEmail('')
           setPassword('')
@@ -52,7 +49,9 @@ const Login = () => {
 
       }
 
+      // ======================
       // ĐĂNG NHẬP
+      // ======================
       else {
 
         const response = await axios.post(
@@ -65,12 +64,9 @@ const Login = () => {
           toast.success(response.data.message)
 
           setToken(response.data.token)
-
-          // lưu token
           localStorage.setItem('token', response.data.token)
 
-          // ⭐ lưu userId để dùng cho Profile
-          localStorage.setItem('userId', response.data.userId)
+  
 
         } else {
 
@@ -84,7 +80,7 @@ const Login = () => {
 
       console.log(error)
 
-      toast.error('Lỗi kết nối')
+      toast.error('Lỗi kết nối server')
 
     }
 
@@ -93,9 +89,7 @@ const Login = () => {
   useEffect(() => {
 
     if (token) {
-
       navigate('/')
-
     }
 
   }, [token])
@@ -113,17 +107,15 @@ const Login = () => {
       </div>
 
       {
-        currentState === 'Đăng nhập'
-          ? ''
-          :
-          <input
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-            type='text'
-            className='w-full px-3 py-2 border border-gray-800'
-            placeholder='Họ tên'
-            required
-          />
+        currentState === 'Đăng ký' &&
+        <input
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+          type='text'
+          className='w-full px-3 py-2 border border-gray-800'
+          placeholder='Họ tên'
+          required
+        />
       }
 
       <input
@@ -146,7 +138,7 @@ const Login = () => {
 
       <div className='w-full flex justify-between text-sm mt-[-8px]'>
 
-        <p className='hover:text-rose-600 active:text-rose-700 cursor-pointer'>
+        <p className='hover:text-rose-600 cursor-pointer'>
           Quên mật khẩu ?
         </p>
 
@@ -155,14 +147,14 @@ const Login = () => {
             ?
             <p
               onClick={() => setCurrentState('Đăng ký')}
-              className='hover:text-rose-600 active:text-rose-700 cursor-pointer'
+              className='hover:text-rose-600 cursor-pointer'
             >
               Tạo tài khoản
             </p>
             :
             <p
               onClick={() => setCurrentState('Đăng nhập')}
-              className='hover:text-rose-600 active:text-rose-700 cursor-pointer'
+              className='hover:text-rose-600 cursor-pointer'
             >
               Đăng nhập ở đây
             </p>
@@ -170,7 +162,7 @@ const Login = () => {
 
       </div>
 
-      <button className='bg-rose-500 hover:bg-rose-600 active:bg-rose-700 cursor-pointer rounded-full text-white font-light px-8 py-2 mt-4'>
+      <button className='bg-rose-500 hover:bg-rose-600 cursor-pointer rounded-full text-white font-light px-8 py-2 mt-4'>
 
         {currentState === 'Đăng nhập' ? 'Đăng nhập' : 'Đăng ký'}
 
