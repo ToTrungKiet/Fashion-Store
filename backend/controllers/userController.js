@@ -26,7 +26,12 @@ class UserController {
       const isMatch = await bcrypt.compare(password, user.password);
       if(isMatch) {
         const token = createToken(user._id);
-        res.json({ success: true, message: 'Đăng nhập thành công !', token });
+        res.json({
+          success: true,
+          message: "Đăng nhập thành công !",
+          token,
+          userId: user._id
+        });
       } else {
         res.json({ success: false, message: "Mật khẩu không đúng !" });
       }
@@ -36,7 +41,78 @@ class UserController {
       res.status(500).json({ success: false, message: error.message });
     }
   }
+  // Route lấy thông tin profile
+  async getProfile(req, res) {
 
+    try {
+  
+      const { userId } = req.body
+  
+      const user = await userModel.findById(userId).select("-password")
+  
+      if (!user) {
+        return res.json({
+          success:false,
+          message:"Không tìm thấy user"
+        })
+      }
+  
+      res.json({
+        success:true,
+        user
+      })
+  
+    } catch (error) {
+  
+      console.log(error)
+      res.json({
+        success:false,
+        message:error.message
+      })
+  
+    }
+  
+  }
+async updateProfile(req, res) {
+  try {
+
+    const { userId, firstName, lastName, email, address, ward, district, city, phone } = req.body;
+
+    const user = await userModel.findByIdAndUpdate(
+      userId,
+      {
+        firstName,
+        lastName,
+        email,
+        address,
+        ward,
+        district,
+        city,
+        phone
+      },
+      { returnDocument: "after" }
+    );
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "Không tìm thấy user"
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Cập nhật thành công",
+      user
+    });
+
+  } catch (error) {
+
+    console.log(error);
+    res.json({ success: false, message: error.message });
+
+  }
+}
   // Route đăng ký người dùng
   async registerUser(req, res) {
     try {

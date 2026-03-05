@@ -45,19 +45,39 @@ const Navbar = () => {
           <FiSearch onClick={() => setShowSearch(true)} className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
 
           <div className='group relative'>
-            <FiUser onClick={() => token ? null : navigate('/login')} className='w-6 h-6 cursor-pointer hover:text-red-500 transition' />
+  <FiUser 
+    onClick={() => token ? null : navigate('/login')} 
+    className='w-6 h-6 cursor-pointer hover:text-red-500 transition' 
+  />
 
-            {
-              token &&
-              <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50'>
-                <div className='flex flex-col gap-2 w-38 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
-                  <p className='cursor-pointer hover:text-red-500'>Hồ sơ của tôi</p>
-                  <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-red-500'>Đơn hàng</p>
-                  <p onClick={logout} className='cursor-pointer hover:text-red-500'>Đăng xuất</p>
-                </div>
-              </div>
-            }
-          </div>
+  {
+    token &&
+    <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50'>
+      <div className='flex flex-col gap-2 w-38 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
+        <p 
+          onClick={() => navigate('/profile')}
+          className='cursor-pointer hover:text-red-500'
+        >
+          Hồ sơ của tôi
+        </p>
+
+        <p 
+          onClick={() => navigate('/orders')} 
+          className='cursor-pointer hover:text-red-500'
+        >
+          Đơn hàng
+        </p>
+
+        <p 
+          onClick={logout} 
+          className='cursor-pointer hover:text-red-500'
+        >
+          Đăng xuất
+        </p>
+      </div>
+    </div>
+  }
+</div>
 
           <Link to='/cart' className='relative'>
             <FiShoppingBag className="w-6 h-6 cursor-pointer hover:text-red-500 transition" />
