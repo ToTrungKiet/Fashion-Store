@@ -2,10 +2,12 @@ import { useState, useContext, useEffect } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import ForgotPasswordModal from '../components/ForgotPasswordModal'
 
 const Login = () => {
 
   const [currentState, setCurrentState] = useState('Đăng nhập')
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
 
   const { token, setToken, navigate, backendUrl } = useContext(ShopContext)
 
@@ -96,79 +98,88 @@ const Login = () => {
 
   return (
 
-    <form
-      onSubmit={onSubmitHandler}
-      className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800'
-    >
+    <>
+      {showForgotPassword ? (
+        <ForgotPasswordModal onClose={() => setShowForgotPassword(false)} />
+      ) : (
+        <form
+          onSubmit={onSubmitHandler}
+          className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800'
+        >
 
-      <div className='inline-flex items-center gap-2 mb-2 mt-10'>
-        <p className='prata-regular text-3xl'>{currentState}</p>
-        <hr className='border-none h-[1.5px] w-8 bg-gray-800' />
-      </div>
+          <div className='inline-flex items-center gap-2 mb-2 mt-10'>
+            <p className='prata-regular text-3xl'>{currentState}</p>
+            <hr className='border-none h-[1.5px] w-8 bg-gray-800' />
+          </div>
 
-      {
-        currentState === 'Đăng ký' &&
-        <input
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          type='text'
-          className='w-full px-3 py-2 border border-gray-800'
-          placeholder='Họ tên'
-          required
-        />
-      }
+          {
+            currentState === 'Đăng ký' &&
+            <input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              type='text'
+              className='w-full px-3 py-2 border border-gray-800'
+              placeholder='Họ tên'
+              required
+            />
+          }
 
-      <input
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-        type='email'
-        className='w-full px-3 py-2 border border-gray-800'
-        placeholder='Email'
-        required
-      />
+          <input
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            type='email'
+            className='w-full px-3 py-2 border border-gray-800'
+            placeholder='Email'
+            required
+          />
 
-      <input
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        type='password'
-        className='w-full px-3 py-2 border border-gray-800'
-        placeholder='Mật khẩu'
-        required
-      />
+          <input
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            type='password'
+            className='w-full px-3 py-2 border border-gray-800'
+            placeholder='Mật khẩu'
+            required
+          />
 
-      <div className='w-full flex justify-between text-sm mt-[-8px]'>
+          <div className='w-full flex justify-between text-sm mt-[-8px]'>
 
-        <p className='hover:text-rose-600 cursor-pointer'>
-          Quên mật khẩu ?
-        </p>
-
-        {
-          currentState === 'Đăng nhập'
-            ?
-            <p
-              onClick={() => setCurrentState('Đăng ký')}
+            <p 
+              onClick={() => setShowForgotPassword(true)}
               className='hover:text-rose-600 cursor-pointer'
             >
-              Tạo tài khoản
+              Quên mật khẩu ?
             </p>
-            :
-            <p
-              onClick={() => setCurrentState('Đăng nhập')}
-              className='hover:text-rose-600 cursor-pointer'
-            >
-              Đăng nhập ở đây
-            </p>
-        }
 
-      </div>
+            {
+              currentState === 'Đăng nhập'
+                ?
+                <p
+                  onClick={() => setCurrentState('Đăng ký')}
+                  className='hover:text-rose-600 cursor-pointer'
+                >
+                  Tạo tài khoản
+                </p>
+                :
+                <p
+                  onClick={() => setCurrentState('Đăng nhập')}
+                  className='hover:text-rose-600 cursor-pointer'
+                >
+                  Đăng nhập ở đây
+                </p>
+            }
 
-      <button className='bg-rose-500 hover:bg-rose-600 cursor-pointer rounded-full text-white font-light px-8 py-2 mt-4'>
+          </div>
 
-        {currentState === 'Đăng nhập' ? 'Đăng nhập' : 'Đăng ký'}
+          <button className='bg-rose-500 hover:bg-rose-600 cursor-pointer rounded-full text-white font-light px-8 py-2 mt-4'>
 
-      </button>
+            {currentState === 'Đăng nhập' ? 'Đăng nhập' : 'Đăng ký'}
 
-    </form>
+          </button>
+
+        </form>
+      )}
+    </>
 
   )
 

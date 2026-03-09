@@ -1,14 +1,15 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
 import { ShopContext } from '../context/ShopContext'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import AddressSelector from '../components/AddressSelector'
 
 const PlaceOrder = () => {
 
-  const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products} = useContext(ShopContext)
+  const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext)
   const [method, setMethod] = useState('cod')
   const [formData, setFormData] = useState({
     firstName: '',
@@ -21,15 +22,62 @@ const PlaceOrder = () => {
     phone: ''
   })
 
+  // Load thông tin từ profile nếu đã đăng nhập
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      if (token) {
+        try {
+          const res = await axios.post(
+            backendUrl + '/api/user/profile',
+            {},
+            { headers: { token } }
+          )
+          if (res.data.success) {
+            const user = res.data.user
+            setFormData({
+              firstName: user.firstName || '',
+              lastName: user.lastName || '',
+              email: user.email || '',
+              address: user.address || '',
+              ward: user.ward || '',
+              district: user.district || '',
+              city: user.city || '',
+              phone: user.phone || ''
+            })
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }
+    loadUserProfile()
+  }, [token, backendUrl])
+
   const onChangeHandler = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const name = e.target.name
+    const value = e.target.value
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  // Xử lý khi thay đổi địa chỉ từ AddressSelector
+  const handleAddressChange = (addressData) => {
+    setFormData(prev => ({
+      ...prev,
+      city: addressData.city,
+      district: addressData.district,
+      ward: addressData.ward
+    }))
+  }
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    
+    // Validate địa chỉ
+    if (!formData.city || !formData.district || !formData.ward) {
+      toast.error('Vui lòng chọn đầy đủ địa chỉ giao hàng!')
+      return
+    }
+    
     try {
       let orderItems = []
       for (const items in cartItems) {
@@ -50,29 +98,29 @@ const PlaceOrder = () => {
         amount: getCartAmount() + delivery_fee,
       }
       switch (method) {
-          case 'cod': 
-            const response = await axios.post(backendUrl + '/api/order/place', orderData, { headers: {token}})
-            if (response.data.success) {
-              setCartItems({})
-              navigate('/orders')
-              toast.success(response.data.message)
-            } else {
-              toast.error(response.data.message)
-            }
-            break;
-          case 'momo': 
-            break;
-          case 'zalopay': 
-            break;
-          default: 
-            break;
+        case 'cod':
+          const response = await axios.post(backendUrl + '/api/order/place', orderData, { headers: { token } })
+          if (response.data.success) {
+            setCartItems({})
+            navigate('/orders')
+            toast.success(response.data.message)
+          } else {
+            toast.error(response.data.message)
+          }
+          break
+        case 'momo':
+          break
+        case 'zalopay':
+          break
+        default:
+          break
       }
-      
+
     } catch (error) {
-        console.log(error);
-        toast.error(error.response?.data?.message || 'Đã có lỗi xảy ra !')
+      console.log(error)
+      toast.error(error.response?.data?.message || 'Đã có lỗi xảy ra !')
     }
-  };
+  }
 
   return (
     <form onSubmit={onSubmitHandler} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t'>
@@ -85,14 +133,18 @@ const PlaceOrder = () => {
           <input onChange={onChangeHandler} name='firstName' value={formData.firstName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Họ' required />
           <input onChange={onChangeHandler} name='lastName' value={formData.lastName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Tên' required />
         </div>
-        <input onChange={onChangeHandler} name='email' value={formData.email} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='email' placeholder='Email' required/>
+        <input onChange={onChangeHandler} name='email' value={formData.email} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='email' placeholder='Email' required />
         <input onChange={onChangeHandler} name='address' value={formData.address} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Số nhà, tên đường' required />
-        <div className='flex gap-3'>
-          <input onChange={onChangeHandler} name='ward' value={formData.ward} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Phường/Xã' required />
-          <input onChange={onChangeHandler} name='district' value={formData.district} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Quận/Huyện' required />
+        
+        {/* Address Selector - Dropdown cascade */}
+        <div className='grid grid-cols-2 gap-3'>
+          <AddressSelector
+            value={{ city: formData.city, district: formData.district, ward: formData.ward }}
+            onChange={handleAddressChange}
+          />
         </div>
-        <input onChange={onChangeHandler} name='city' value={formData.city} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='text' placeholder='Tỉnh/Thành phố' required />
-        <input onChange={onChangeHandler} name='phone' value={formData.phone} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='tel' placeholder='Sô điện thoại' pattern='0[0-9]{9}' required />
+        
+        <input onChange={onChangeHandler} name='phone' value={formData.phone} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type='tel' placeholder='Số điện thoại' pattern='0[0-9]{9}' required />
       </div>
       {/* BÊN PHẢI */}
       <div className='mt-8'>

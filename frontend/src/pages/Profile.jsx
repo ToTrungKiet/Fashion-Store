@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { ShopContext } from "../context/ShopContext";
+import AddressSelector from "../components/AddressSelector";
+
 const Profile = () => {
   const { token, backendUrl } = useContext(ShopContext);
   const [form, setForm] = useState({
@@ -32,85 +34,71 @@ const Profile = () => {
     setPasswordForm({ ...passwordForm, [e.target.name]: e.target.value });
   };
 
+  // Xử lý khi thay đổi địa chỉ từ AddressSelector
+  const handleAddressChange = (addressData) => {
+    setForm({
+      ...form,
+      city: addressData.city,
+      district: addressData.district,
+      ward: addressData.ward
+    });
+  };
+
   // LOAD PROFILE KHI MỞ TRANG
   const loadProfile = async () => {
     try {
-
       if (token) {
+        const res = await axios.post(
+          backendUrl + "/api/user/profile",
+          {},
+          { headers: { token } }
+        );
 
-      const res = await axios.post(
-        backendUrl + "/api/user/profile",
-        {},
-        { headers: { token } }
-      );
-
-      if (res.data.success) {
-
-        const user = res.data.user;
-
-        setForm({
-          firstName: user.firstName || "",
-          lastName: user.lastName || "",
-          email: user.email || "",
-          address: user.address || "",
-          ward: user.ward || "",
-          district: user.district || "",
-          city: user.city || "",
-          phone: user.phone || ""
-        });
-
+        if (res.data.success) {
+          const user = res.data.user;
+          setForm({
+            firstName: user.firstName || "",
+            lastName: user.lastName || "",
+            email: user.email || "",
+            address: user.address || "",
+            ward: user.ward || "",
+            district: user.district || "",
+            city: user.city || "",
+            phone: user.phone || ""
+          });
+        }
       }
-    }
-
     } catch (error) {
-
       console.log(error);
       toast.error("Lỗi khi tải hồ sơ");
-
     }
   };
 
-  // chạy khi mở trang
   useEffect(() => {
     loadProfile();
   }, [token]);
 
   // LƯU PROFILE
   const saveProfile = async () => {
-
     try {
+      if (token) {
+        const res = await axios.post(
+          backendUrl + "/api/user/update-profile",
+          { ...form },
+          { headers: { token } }
+        );
 
-      if(token) {
-
-      const res = await axios.post(
-        backendUrl + "/api/user/update-profile",
-        {
-          ...form
-        },
-        { headers: { token } }
-      );
-
-      if (res.data.success) {
-
-        toast.success("Lưu thông tin thành công!");
-
-        // load lại dữ liệu mới
-        loadProfile();
-
-      } else {
-
-        toast.error(res.data.message);
-
+        if (res.data.success) {
+          toast.success("Lưu thông tin thành công!");
+          loadProfile();
+        } else {
+          toast.error(res.data.message);
+        }
       }
-    }
-
     } catch (error) {
-
       console.log(error);
       toast.error("Có lỗi xảy ra");
-
     }
-
   };
 
   // THAY ĐỔI MẬT KHẨU
@@ -119,14 +107,12 @@ const Profile = () => {
     setLoading(true);
 
     try {
-      // Kiểm tra mật khẩu mới và xác nhận khớp
       if (passwordForm.newPassword !== passwordForm.confirmPassword) {
         toast.error("Mật khẩu xác nhận không khớp!");
         setLoading(false);
         return;
       }
 
-      // Kiểm tra mật khẩu mới có mạnh không
       const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
       if (!strongPassword.test(passwordForm.newPassword)) {
         toast.error("Mật khẩu ít nhất 8 ký tự, phải có chữ hoa, chữ thường, số và ký tự đặc biệt!");
@@ -155,7 +141,6 @@ const Profile = () => {
       } else {
         toast.error(res.data.message);
       }
-
     } catch (error) {
       console.log(error);
       toast.error("Lỗi khi thay đổi mật khẩu");
@@ -166,13 +151,9 @@ const Profile = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-
-      <h2 className="text-2xl font-semibold mb-6">
-        Thông tin cá nhân
-      </h2>
+      <h2 className="text-2xl font-semibold mb-6">Thông tin cá nhân</h2>
 
       <div className="grid grid-cols-2 gap-4">
-
         <input
           name="firstName"
           value={form.firstName}
@@ -205,28 +186,10 @@ const Profile = () => {
           className="border p-3 rounded col-span-2"
         />
 
-        <input
-          name="ward"
-          value={form.ward}
-          onChange={handleChange}
-          placeholder="Phường/Xã"
-          className="border p-3 rounded"
-        />
-
-        <input
-          name="district"
-          value={form.district}
-          onChange={handleChange}
-          placeholder="Quận/Huyện"
-          className="border p-3 rounded"
-        />
-
-        <input
-          name="city"
-          value={form.city}
-          onChange={handleChange}
-          placeholder="Tỉnh/Thành phố"
-          className="border p-3 rounded col-span-2"
+        {/* Address Selector - Dropdown cascade */}
+        <AddressSelector
+          value={{ city: form.city, district: form.district, ward: form.ward }}
+          onChange={handleAddressChange}
         />
 
         <input
@@ -236,7 +199,6 @@ const Profile = () => {
           placeholder="Số điện thoại"
           className="border p-3 rounded col-span-2"
         />
-
       </div>
 
       <button
@@ -249,7 +211,7 @@ const Profile = () => {
       {/* PHẦN THAY ĐỔI MẬT KHẨU */}
       <div className="mt-10 pt-6 border-t">
         <h3 className="text-xl font-semibold mb-4">Thay đổi mật khẩu</h3>
-        
+
         {!showPasswordForm ? (
           <button
             onClick={() => setShowPasswordForm(true)}
@@ -315,7 +277,6 @@ const Profile = () => {
           </form>
         )}
       </div>
-
     </div>
   );
 };

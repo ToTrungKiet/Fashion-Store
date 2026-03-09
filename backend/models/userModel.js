@@ -22,7 +22,11 @@ const userSchema = new mongoose.Schema({
 
   city: { type: String, default: "" },
 
-  phone: { type: String, default: "" }
+  phone: { type: String, default: "" },
+
+  resetPasswordToken: { type: String, default: null },
+
+  resetPasswordExpires: { type: Date, default: null }
 
 }, 
 {

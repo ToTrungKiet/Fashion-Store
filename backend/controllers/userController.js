@@ -269,8 +269,6 @@ async updateProfile(req, res) {
         });
       }
 
-      console.log('Received token:', token);
-
       // Kiểm tra mật khẩu mới
       if (!newPassword || !confirmPassword) {
         return res.json({
@@ -296,15 +294,12 @@ async updateProfile(req, res) {
 
       // Hash token để so sánh
       const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-      console.log('Token hash:', tokenHash);
 
       // Tìm người dùng với token và kiểm tra hạn
       const user = await userModel.findOne({
         resetPasswordToken: tokenHash,
         resetPasswordExpires: { $gt: Date.now() }
       });
-
-      console.log('User found:', user ? 'Yes' : 'No');
 
       if (!user) {
         return res.json({

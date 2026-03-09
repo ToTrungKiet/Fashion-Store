@@ -14,6 +14,7 @@ import SearchBar from './components/SearchBar'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Profile from "./pages/Profile";
+import ResetPassword from './pages/ResetPassword';
 function App() {
   
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path='/product/:productId' element={<Product/>} />
         <Route path='/cart' element={<Cart/>} />
         <Route path='/login' element={<Login/>} />
+        <Route path='/reset-password/:token' element={<ResetPassword/>} />
         <Route path='/place-order' element={<PlaceOrder/>} />
         <Route path='/orders' element={<Orders/>} />
       </Routes>
