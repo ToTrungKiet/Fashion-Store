@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { ShopContext } from "../context/ShopContext";
 const Profile = () => {
-  const { token } = useContext(ShopContext);
+  const { token, backendUrl } = useContext(ShopContext);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -15,8 +15,21 @@ const Profile = () => {
     phone: ""
   });
 
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
+
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handlePasswordChange = (e) => {
+    setPasswordForm({ ...passwordForm, [e.target.name]: e.target.value });
   };
 
   // LOAD PROFILE KHI MỞ TRANG
@@ -26,8 +39,9 @@ const Profile = () => {
       if (token) {
 
       const res = await axios.post(
-        "http://localhost:4000/api/user/profile",
-        { headers:{token} }
+        backendUrl + "/api/user/profile",
+        {},
+        { headers: { token } }
       );
 
       if (res.data.success) {
@@ -51,6 +65,7 @@ const Profile = () => {
     } catch (error) {
 
       console.log(error);
+      toast.error("Lỗi khi tải hồ sơ");
 
     }
   };
@@ -58,7 +73,7 @@ const Profile = () => {
   // chạy khi mở trang
   useEffect(() => {
     loadProfile();
-  }, []);
+  }, [token]);
 
   // LƯU PROFILE
   const saveProfile = async () => {
@@ -68,12 +83,11 @@ const Profile = () => {
       if(token) {
 
       const res = await axios.post(
-        "http://localhost:4000/api/user/update-profile",
+        backendUrl + "/api/user/update-profile",
         {
-          
           ...form
         },
-        { headers:{token} }
+        { headers: { token } }
       );
 
       if (res.data.success) {
@@ -97,6 +111,57 @@ const Profile = () => {
 
     }
 
+  };
+
+  // THAY ĐỔI MẬT KHẨU
+  const changePassword = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Kiểm tra mật khẩu mới và xác nhận khớp
+      if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+        toast.error("Mật khẩu xác nhận không khớp!");
+        setLoading(false);
+        return;
+      }
+
+      // Kiểm tra mật khẩu mới có mạnh không
+      const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+      if (!strongPassword.test(passwordForm.newPassword)) {
+        toast.error("Mật khẩu ít nhất 8 ký tự, phải có chữ hoa, chữ thường, số và ký tự đặc biệt!");
+        setLoading(false);
+        return;
+      }
+
+      const res = await axios.post(
+        backendUrl + "/api/user/change-password",
+        {
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword,
+          confirmPassword: passwordForm.confirmPassword
+        },
+        { headers: { token } }
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setPasswordForm({
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: ""
+        });
+        setShowPasswordForm(false);
+      } else {
+        toast.error(res.data.message);
+      }
+
+    } catch (error) {
+      console.log(error);
+      toast.error("Lỗi khi thay đổi mật khẩu");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -176,10 +241,80 @@ const Profile = () => {
 
       <button
         onClick={saveProfile}
-        className="mt-6 bg-black text-white px-6 py-2 rounded"
+        className="mt-6 bg-black text-white px-6 py-2 rounded hover:bg-gray-800"
       >
         Lưu thông tin
       </button>
+
+      {/* PHẦN THAY ĐỔI MẬT KHẨU */}
+      <div className="mt-10 pt-6 border-t">
+        <h3 className="text-xl font-semibold mb-4">Thay đổi mật khẩu</h3>
+        
+        {!showPasswordForm ? (
+          <button
+            onClick={() => setShowPasswordForm(true)}
+            className="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2 rounded"
+          >
+            Thay đổi mật khẩu
+          </button>
+        ) : (
+          <form onSubmit={changePassword} className="grid grid-cols-1 gap-4">
+            <input
+              type="password"
+              name="currentPassword"
+              value={passwordForm.currentPassword}
+              onChange={handlePasswordChange}
+              placeholder="Mật khẩu hiện tại"
+              className="border p-3 rounded"
+              required
+            />
+
+            <input
+              type="password"
+              name="newPassword"
+              value={passwordForm.newPassword}
+              onChange={handlePasswordChange}
+              placeholder="Mật khẩu mới"
+              className="border p-3 rounded"
+              required
+            />
+
+            <input
+              type="password"
+              name="confirmPassword"
+              value={passwordForm.confirmPassword}
+              onChange={handlePasswordChange}
+              placeholder="Xác nhận mật khẩu"
+              className="border p-3 rounded"
+              required
+            />
+
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded disabled:opacity-50"
+              >
+                {loading ? "Đang xử lý..." : "Xác nhận"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPasswordForm(false);
+                  setPasswordForm({
+                    currentPassword: "",
+                    newPassword: "",
+                    confirmPassword: ""
+                  });
+                }}
+                className="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded"
+              >
+                Hủy
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
 
     </div>
   );
