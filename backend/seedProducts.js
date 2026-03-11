@@ -133,9 +133,12 @@ const seedProducts = async () => {
   try {
     await connectDB();
 
-    // Clear existing products
-    await productModel.deleteMany({});
-    console.log('Cleared existing products');
+    const existingProducts = await productModel.find({});
+    
+    if (existingProducts.length > 0) {
+      console.log(`Found ${existingProducts.length} existing products. Skipping product creation.`);
+      process.exit(0);
+    }
 
     const createdProducts = await productModel.insertMany(sampleProducts);
     console.log(`\n✓ Created ${createdProducts.length} sample products:`);
