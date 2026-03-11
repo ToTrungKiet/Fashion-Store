@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({
   userId: { type: String, required: true },
   items: { type: Array, required: true },
   amount: { type: Number, required: true },
@@ -8,12 +8,11 @@ const userSchema = new mongoose.Schema({
   status: { type: String, required: true, default: 'Đơn hàng đã đặt' },
   paymentMethod: { type: String, required: true },
   payment: { type: Boolean, required: true, default: false }
-}, 
-{
+}, {
   minimize: false,
   timestamps: true
 });
 
-const orderModel = mongoose.models.order || mongoose.model('order', userSchema);
+const orderModel = mongoose.models.order || mongoose.model('order', orderSchema);
 
 export default orderModel;

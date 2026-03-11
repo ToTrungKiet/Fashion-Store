@@ -10,7 +10,7 @@ orderRouter.post('/status', adminAuth.authenticate, OrderController.updateStatus
 
 orderRouter.post('/place', auth.authUser, OrderController.placeOrder)
 orderRouter.post('/momo', auth.authUser, OrderController.placeOrderMomo)
-orderRouter.post('/zalopay', auth.authUser, OrderController.placeOrderZalopay)
+orderRouter.post('/VNPay', auth.authUser, OrderController.placeOrderVNPay)
 
 orderRouter.post('/user-orders', auth.authUser, OrderController.userOrders)
 
