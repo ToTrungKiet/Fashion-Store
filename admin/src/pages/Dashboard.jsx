@@ -205,8 +205,12 @@ const Dashboard = ({ token }) => {
                           {formatPrice(order.amount)} {currency}
                         </td>
                         <td className='px-4 py-4'>
-                          <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(order.status)}`}>
-                            {order.status || 'N/A'}
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-semibold border ${
+                              getStatusColor(order.paymentMethod === 'vnpay' ? 'Đơn hàng đã đặt' : order.status)
+                            }`}
+                          >
+                            {order.paymentMethod === 'vnpay' ? 'Đơn hàng đã đặt' : (order.status || 'N/A')}
                           </span>
                         </td>
                         <td className='px-4 py-4 text-gray-600 text-sm'>
