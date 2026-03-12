@@ -16,30 +16,57 @@ const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({})
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState('')
+  const [selectedItems, setSelectedItems] = useState({})
 
-  const addToCart = async (itemId, size) => {
+  const addToCart = async (itemId, size, color) => {
     let cartData = structuredClone(cartItems);
+    const product = products.find(p => p._id === itemId);
+    
     if (!size) {
       toast.error('Vui lòng chọn size !')
       return;
     }
+    
+    if (!color) {
+      toast.error('Vui lòng chọn màu !')
+      return;
+    }
+    
+    if (!product) {
+      toast.error('Không tìm thấy sản phẩm !')
+      return;
+    }
+    
+    const sizeColorKey = `${size}-${color}`;
+    const sizeColorQuantity = product.sizeColorQuantity?.[sizeColorKey] || 0;
+    if (sizeColorQuantity === 0) {
+      toast.error(`Size ${size} - Màu ${color} hết hàng!`)
+      return;
+    }
+    
+    const currentQuantity = cartData[itemId]?.[sizeColorKey] || 0;
+    if (currentQuantity >= sizeColorQuantity) {
+      toast.error(`Size ${size} - Màu ${color} chỉ còn ${sizeColorQuantity} chiếc. Vui lòng giảm số lượng!`)
+      return;
+    }
+    
     if (cartData[itemId]) {
-      if (cartData[itemId][size]) {
-        cartData[itemId][size] += 1;
+      if (cartData[itemId][sizeColorKey]) {
+        cartData[itemId][sizeColorKey] += 1;
       }
       else {
-        cartData[itemId][size] = 1;
+        cartData[itemId][sizeColorKey] = 1;
       }
     }
     else {
       cartData[itemId] = {};
-      cartData[itemId][size] = 1;
+      cartData[itemId][sizeColorKey] = 1;
     }
     setCartItems(cartData);
 
     if (token) {
       try {
-        await axios.post(backendUrl + '/api/cart/add', {itemId, size}, {headers: {token}});
+        await axios.post(backendUrl + '/api/cart/add', {itemId, size, color}, {headers: {token}});
       } catch (error) {
         console.log(error);
         toast.error('Lỗi kết nối');
@@ -53,7 +80,7 @@ const ShopContextProvider = (props) => {
       for (const item in cartItems[items]) {
         try {
           if (cartItems[items][item] > 0) {
-            totalCount += cartItems[items][item];
+            totalCount += 1;
           }
         } catch (error) {
           console.log(error);
@@ -64,14 +91,30 @@ const ShopContextProvider = (props) => {
     return totalCount;
   }
 
-  const updateQuantity = async (itemId, size, quantity) => {
+  const updateQuantity = async (itemId, size, color, quantity) => {
     let cartData = structuredClone(cartItems);
-    cartData[itemId][size] = quantity;
+    const product = products.find(p => p._id === itemId);
+    
+    if (!product) {
+      toast.error('Không tìm thấy sản phẩm !')
+      return;
+    }
+    
+    const sizeColorKey = `${size}-${color}`;
+    const sizeColorQuantity = product.sizeColorQuantity?.[sizeColorKey] || 0;
+    if (quantity > sizeColorQuantity) {
+      toast.error(`Size ${size} - Màu ${color} chỉ còn ${sizeColorQuantity} chiếc. Vui lòng giảm số lượng!`)
+      cartData[itemId][sizeColorKey] = sizeColorQuantity;
+      setCartItems(cartData);
+      return;
+    }
+    
+    cartData[itemId][sizeColorKey] = quantity;
     setCartItems(cartData);
     
     if (token) {
       try {
-        await axios.post(backendUrl + '/api/cart/update', {itemId, size, quantity}, {headers: {token}});
+        await axios.post(backendUrl + '/api/cart/update', {itemId, size, color, quantity}, {headers: {token}});
       } catch (error) {
         console.log(error);
         toast.error('Lỗi kết nối');
@@ -125,6 +168,48 @@ const ShopContextProvider = (props) => {
       toast.error('Lỗi kết nối');
     }
   }
+
+  const toggleSelectItem = (itemId, size, color) => {
+    const key = `${itemId}-${size}-${color}`;
+    setSelectedItems(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  }
+
+  const selectAllItems = () => {
+    const newSelected = {};
+    for (const itemId in cartItems) {
+      for (const sizeColor in cartItems[itemId]) {
+        if (cartItems[itemId][sizeColor] > 0) {
+          newSelected[`${itemId}-${sizeColor}`] = true;
+        }
+      }
+    }
+    setSelectedItems(newSelected);
+  }
+
+  const deselectAllItems = () => {
+    setSelectedItems({});
+  }
+
+  const deleteSelectedItems = async () => {
+    for (const key in selectedItems) {
+      if (selectedItems[key]) {
+        const lastDashIndex = key.lastIndexOf('-');
+        const color = key.substring(lastDashIndex + 1);
+        const secondLastDashIndex = key.lastIndexOf('-', lastDashIndex - 1);
+        const size = key.substring(secondLastDashIndex + 1, lastDashIndex);
+        const itemId = key.substring(0, secondLastDashIndex);
+        await updateQuantity(itemId, size, color, 0);
+      }
+    }
+    setSelectedItems({});
+  }
+
+  const getSelectedCount = () => {
+    return Object.values(selectedItems).filter(Boolean).length;
+  }
   
   useEffect(() => {
     getProductsData();
@@ -147,7 +232,8 @@ const ShopContextProvider = (props) => {
     search, setSearch, showSearch, setShowSearch,
     cartItems, setCartItems, addToCart, getCartCount,
     updateQuantity, getCartAmount, formatPrice,
-    navigate, backendUrl, token, setToken
+    navigate, backendUrl, token, setToken,
+    selectedItems, toggleSelectItem, selectAllItems, deselectAllItems, deleteSelectedItems, getSelectedCount
   }
 
   return (
