@@ -1,7 +1,9 @@
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import userModel from "../models/userModel.js";
+import { sendResetPasswordEmail } from "../config/email.js";
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
@@ -201,6 +203,196 @@ async updateProfile(req, res) {
       res.status(500).json({ success: false, message: error.message });
     }
   }
-}
 
-export default new UserController();
+  // Route yêu cầu đặt lại mật khẩu
+  async forgotPassword(req, res) {
+    try {
+      const { email } = req.body;
+
+      // Kiểm tra email hợp lệ
+      if (!validator.isEmail(email)) {
+        return res.json({
+          success: false,
+          message: "Vui lòng nhập Email hợp lệ !"
+        });
+      }
+
+      // Tìm người dùng theo email
+      const user = await userModel.findOne({ email });
+      if (!user) {
+        return res.json({
+          success: false,
+          message: "Email không tồn tại trong hệ thống !"
+        });
+      }
+
+      // Tạo reset token
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+      // Lưu token vào database (token sẽ hết hạn sau 1 giờ)
+      user.resetPasswordToken = resetTokenHash;
+      user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 giờ
+      await user.save();
+
+      // Gửi email
+      const emailSent = await sendResetPasswordEmail(email, resetToken);
+
+      if (emailSent) {
+        res.json({
+          success: true,
+          message: "Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra email của bạn !"
+        });
+      } else {
+        return res.json({
+          success: false,
+          message: "Lỗi khi gửi email. Vui lòng thử lại sau !"
+        });
+      }
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Route xác thực token và đặt lại mật khẩu
+  async resetPassword(req, res) {
+    try {
+      const { token, newPassword, confirmPassword } = req.body;
+
+      // Kiểm tra token
+      if (!token) {
+        return res.json({
+          success: false,
+          message: "Token không được cung cấp !"
+        });
+      }
+
+      // Kiểm tra mật khẩu mới
+      if (!newPassword || !confirmPassword) {
+        return res.json({
+          success: false,
+          message: "Vui lòng nhập mật khẩu mới !"
+        });
+      }
+
+      if (newPassword !== confirmPassword) {
+        return res.json({
+          success: false,
+          message: "Mật khẩu xác nhận không khớp !"
+        });
+      }
+
+      const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+      if (!strongPassword.test(newPassword)) {
+        return res.json({
+          success: false,
+          message: "Mật khẩu ít nhất 8 ký tự, phải có chữ hoa, chữ thường, số và ký tự đặc biệt !"
+        });
+      }
+
+      // Hash token để so sánh
+      const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+
+      // Tìm người dùng với token và kiểm tra hạn
+      const user = await userModel.findOne({
+        resetPasswordToken: tokenHash,
+        resetPasswordExpires: { $gt: Date.now() }
+      });
+
+      if (!user) {
+        return res.json({
+          success: false,
+          message: "Token không hợp lệ hoặc đã hết hạn !"
+        });
+      }
+
+      // Hash mật khẩu mới
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Cập nhật mật khẩu và xóa reset token
+      user.password = hashedPassword;
+      user.resetPasswordToken = null;
+      user.resetPasswordExpires = null;
+      await user.save();
+
+      res.json({
+        success: true,
+        message: "Mật khẩu đã được đặt lại thành công !"
+      });
+
+     } catch (error) {
+       console.log(error);
+       res.status(500).json({ success: false, message: error.message });
+     }
+   }
+
+   // Route thay đổi mật khẩu khi đã đăng nhập
+   async changePassword(req, res) {
+     try {
+       const { userId, currentPassword, newPassword, confirmPassword } = req.body;
+
+       // Kiểm tra các trường bắt buộc
+       if (!currentPassword || !newPassword || !confirmPassword) {
+         return res.json({
+           success: false,
+           message: "Vui lòng nhập đầy đủ thông tin !"
+         });
+       }
+
+       // Kiểm tra mật khẩu mới và xác nhận khớp nhau
+       if (newPassword !== confirmPassword) {
+         return res.json({
+           success: false,
+           message: "Mật khẩu xác nhận không khớp !"
+         });
+       }
+
+       // Kiểm tra mật khẩu mới có mạnh không
+       const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+       if (!strongPassword.test(newPassword)) {
+         return res.json({
+           success: false,
+           message: "Mật khẩu ít nhất 8 ký tự, phải có chữ hoa, chữ thường, số và ký tự đặc biệt !"
+         });
+       }
+
+       // Tìm người dùng
+       const user = await userModel.findById(userId);
+       if (!user) {
+         return res.json({
+           success: false,
+           message: "Không tìm thấy người dùng !"
+         });
+       }
+
+       // Kiểm tra mật khẩu hiện tại
+       const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+       if (!isPasswordMatch) {
+         return res.json({
+           success: false,
+           message: "Mật khẩu hiện tại không đúng !"
+         });
+       }
+
+       // Hash mật khẩu mới
+       const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+       // Cập nhật mật khẩu
+       user.password = hashedPassword;
+       await user.save();
+
+       res.json({
+         success: true,
+         message: "Mật khẩu đã được thay đổi thành công !"
+       });
+
+     } catch (error) {
+       console.log(error);
+       res.status(500).json({ success: false, message: error.message });
+     }
+   }
+ }
+ 
+ export default new UserController();

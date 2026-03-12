@@ -2,7 +2,16 @@ import jwt from "jsonwebtoken";
 
 class Auth {
   async authUser(req, res, next) {
-    const { token } = req.headers;
+    let token = req.headers.token;
+    
+    // Hỗ trợ format Authorization: Bearer <token>
+    if (!token && req.headers.authorization) {
+      const authHeader = req.headers.authorization;
+      if (authHeader.startsWith('Bearer ')) {
+        token = authHeader.slice(7);
+      }
+    }
+
     if (!token) {
       return res.json({
         success: false,

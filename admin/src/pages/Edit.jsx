@@ -21,6 +21,9 @@ const Edit = ({ token }) => {
   const [subCategory, setSubCategory] = useState('Topwear')
   const [bestseller, setBestseller] = useState(false)
   const [sizes, setSizes] = useState([])
+  const [sizeColorQuantity, setSizeColorQuantity] = useState({})
+  const [colors, setColors] = useState(['Trắng', 'Đen', 'Xám'])
+  const [newColor, setNewColor] = useState('')
 
   const fetchProduct = async () => {
     try {
@@ -34,6 +37,8 @@ const Edit = ({ token }) => {
         setSubCategory(p.subCategory)
         setBestseller(p.bestseller)
         setSizes(p.sizes || [])
+        setSizeColorQuantity(p.sizeColorQuantity || {})
+        setColors(p.colors || ['Trắng', 'Đen', 'Xám'])
         
         setImage1(p.image[0] || false)
         setImage2(p.image[1] || false)
@@ -64,6 +69,8 @@ const Edit = ({ token }) => {
       formData.append('subCategory', subCategory)
       formData.append('bestseller', bestseller)
       formData.append('sizes', JSON.stringify(sizes))
+      formData.append('sizeColorQuantity', JSON.stringify(sizeColorQuantity))
+      formData.append('colors', JSON.stringify(colors))
       
       if (image1 && image1 instanceof File) formData.append('image1', image1)
       if (image2 && image2 instanceof File) formData.append('image2', image2)
@@ -154,6 +161,81 @@ const Edit = ({ token }) => {
                 <p className={`${sizes.includes(sz) ? 'bg-rose-300' : 'bg-slate-200'} px-3 py-1 cursor-pointer`}>{sz}</p>
               </div>
             ))}
+          </div>
+        </div>
+        <div>
+          <p className='mb-2'>Số lượng theo size & màu sắc</p>
+          {sizes.length > 0 && colors.length > 0 ? (
+            <div className='border rounded p-4 max-w-2xl overflow-x-auto'>
+              <table className='w-full text-sm'>
+                <thead>
+                  <tr className='border-b'>
+                    <th className='text-left p-2 font-semibold'>Size \ Màu</th>
+                    {colors.map((color) => (
+                      <th key={color} className='text-center p-2 font-semibold'>{color}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {sizes.map((size) => (
+                    <tr key={size} className='border-b hover:bg-slate-50'>
+                      <td className='p-2 font-medium'>{size}</td>
+                      {colors.map((color) => {
+                        const key = `${size}-${color}`;
+                        return (
+                          <td key={key} className='p-2 text-center'>
+                            <input 
+                              onChange={(e) => setSizeColorQuantity(prev => ({...prev, [key]: Number(e.target.value) || 0}))} 
+                              value={sizeColorQuantity[key] || ''} 
+                              className='w-16 px-2 py-1 border rounded text-center' 
+                              type='number' 
+                              min={0}
+                              placeholder='0'
+                            />
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className='text-sm text-gray-500'>Vui lòng chọn size và màu sắc trước</p>
+          )}
+        </div>
+        <div>
+          <p className='mb-2'>Màu sắc sản phẩm</p>
+          <div className='flex gap-2 flex-wrap mb-3'>
+            {colors.map((color, idx) => (
+              <div key={idx} className='flex items-center gap-2'>
+                <span className='bg-slate-200 px-3 py-1 rounded flex items-center gap-2'>
+                  {color}
+                  <button 
+                    onClick={() => setColors(colors.filter((_, i) => i !== idx))}
+                    type='button'
+                    className='text-red-500 font-bold cursor-pointer'>×</button>
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className='flex gap-2'>
+            <input 
+              onChange={(e) => setNewColor(e.target.value)}
+              value={newColor}
+              className='px-3 py-2 border rounded'
+              type='text'
+              placeholder='Thêm màu mới'
+            />
+            <button 
+              onClick={() => {
+                if (newColor && !colors.includes(newColor)) {
+                  setColors([...colors, newColor]);
+                  setNewColor('');
+                }
+              }}
+              type='button'
+              className='px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-600'>Thêm</button>
           </div>
         </div>
         <div className='flex gap-2 mt-2'>

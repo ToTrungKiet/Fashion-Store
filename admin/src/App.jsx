@@ -8,6 +8,7 @@ import List from './pages/List.jsx'
 import Orders from './pages/Orders.jsx'
 import Login from './pages/Login.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import Warehouse from './pages/Warehouse.jsx'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -41,6 +42,7 @@ function App() {
                 <Route path='/list' element={<List token={token} />} />
                 <Route path='/edit/:id' element={<Edit token={token} />} />
                 <Route path='/orders' element={<Orders token={token} />} />
+                <Route path='/warehouse' element={<Warehouse token={token} />} />
               </Routes>
             </div>
           </div>
