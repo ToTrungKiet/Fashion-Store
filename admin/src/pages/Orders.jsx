@@ -149,11 +149,15 @@ const Orders = ({ token }) => {
                 </p>
 
                 <span
-                  className={`mt-3 px-3 py-1 rounded-full text-xs font-semibold w-fit ${getStatusColor(
-                    order.status
-                  )}`}
+                  className={`mt-3 px-3 py-1 rounded-full text-xs font-semibold w-fit ${
+                    order.paymentMethod === "vnpay" && !order.payment
+                      ? "bg-yellow-100 text-yellow-700"
+                      : getStatusColor(order.status)
+                  }`}
                 >
-                  {order.status}
+                  {order.paymentMethod === "vnpay" && !order.payment
+                    ? "Chưa thanh toán"
+                    : order.status}
                 </span>
               </div>
 

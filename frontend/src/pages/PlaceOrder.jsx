@@ -58,6 +58,7 @@ const PlaceOrder = () => {
     const value = e.target.value
     setFormData(prev => ({ ...prev, [name]: value }))
   }
+  const handlePayment = async () => {
 
   // Xử lý khi thay đổi địa chỉ từ AddressSelector
   const handleAddressChange = (addressData) => {
@@ -68,6 +69,16 @@ const PlaceOrder = () => {
       ward: addressData.ward
     }))
   }
+    const res = await axios.post(
+      "http://localhost:4000/api/payment/create-payment",
+      {
+        amount: totalAmount
+      }
+    );
+
+    window.location.href = res.data.paymentUrl;
+
+  };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -118,6 +129,27 @@ const PlaceOrder = () => {
 
     } catch (error) {
       console.log(error)
+          break;
+        case 'momo':
+          break;
+          case 'VNPay':
+  const responseVNpay = await axios.post(
+    backendUrl + "/api/payment/create-payment",
+    orderData,
+    { headers: { token } }
+  );
+
+  if (responseVNpay.data.success) {
+    window.location.href = responseVNpay.data.paymentUrl;
+  } else {
+    toast.error(responseVNpay.data.message);
+  }
+  break;
+      }
+
+    } catch (error) {
+      console.log(error);
+      console.log("method:", method);
       toast.error(error.response?.data?.message || 'Đã có lỗi xảy ra !')
     }
   }
@@ -155,18 +187,34 @@ const PlaceOrder = () => {
           <Title text1={'PHƯƠNG THỨC'} text2={'THANH TOÁN'} />
           {/* CHỌN PHƯƠNG THỨC THANH TOÁN */}
           <div className='flex gap-3 flex-col lg:flex-row'>
-            <div onClick={() => setMethod('momo')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
+
+            {/* MOMO */}
+            <div
+              onClick={() => setMethod('momo')}
+              className='flex items-center gap-3 border p-2 px-3 cursor-pointer'
+            >
               <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'momo' ? 'bg-red-500' : ''}`}></p>
               <img className='h-6 mx-4' src={assets.momo_logo} alt='' />
             </div>
-            <div onClick={() => setMethod('zalopay')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
-              <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'zalopay' ? 'bg-red-500' : ''}`}></p>
-              <img className='h-5 mx-4' src={assets.zalopay_logo} alt='' />
+
+            {/* VNPAY */}
+            <div
+              onClick={() => setMethod('VNPay')}
+              className='flex items-center gap-3 border p-2 px-3 cursor-pointer'
+            >
+              <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'VNPay' ? 'bg-red-500' : ''}`}></p>
+              <p className='text-gray-500 text-sm font-medium mx-4'>Thanh toán VNPAY</p>
             </div>
-            <div onClick={() => setMethod('cod')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
+
+            {/* COD */}
+            <div
+              onClick={() => setMethod('cod')}
+              className='flex items-center gap-3 border p-2 px-3 cursor-pointer'
+            >
               <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'cod' ? 'bg-red-500' : ''}`}></p>
               <p className='text-gray-500 text-sm font-medium mx-4'>COD</p>
             </div>
+
           </div>
           <div className='w-full text-end mt-8'>
             <button type='submit' className='bg-rose-500 hover:bg-rose-600 rounded-full text-white px-16 py-3 text-sm active:bg-rose-700 cursor-pointer'>ĐẶT HÀNG</button>

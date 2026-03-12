@@ -15,6 +15,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Profile from "./pages/Profile";
 import ResetPassword from './pages/ResetPassword';
+import PaymentSuccess from './pages/PaymentSuccess'
 function App() {
   
   return (
@@ -23,6 +24,7 @@ function App() {
       <Navbar />
       <SearchBar />
       <Routes>
+        <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/profile" element={<Profile />} /> 
         <Route path='/' element={<Home/>} />
         <Route path='/collection' element={<Collection/>} />
