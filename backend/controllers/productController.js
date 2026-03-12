@@ -1,12 +1,13 @@
 import { v2 as cloudinary } from 'cloudinary'
 import productModel from '../models/productModel.js';
+import orderModel from '../models/orderModel.js';
 
 
 class ProductController {
   // Route thêm sản phẩm mới
   async addProduct(req, res) {
     try {
-        const { name, description, price, category, subCategory, sizes, bestseller } = req.body;
+        const { name, description, price, category, subCategory, sizes, bestseller, sizeColorQuantity, colors } = req.body;
 
         const image1 = req.files.image1?.[0];
         const image2 = req.files.image2?.[0];
@@ -22,6 +23,10 @@ class ProductController {
             })
         )
 
+        const parsedSizes = JSON.parse(sizes);
+        const parsedSizeColorQuantity = sizeColorQuantity ? JSON.parse(sizeColorQuantity) : {};
+        const parsedColors = colors ? JSON.parse(colors) : ['Trắng', 'Đen', 'Xám'];
+        
         const newProduct = {
           name,
           description,
@@ -29,7 +34,9 @@ class ProductController {
           category,
           subCategory,
           bestseller: bestseller === 'true' ? true : false,
-          sizes: JSON.parse(sizes),
+          sizes: parsedSizes,
+          colors: parsedColors,
+          sizeColorQuantity: parsedSizeColorQuantity,
           image: imagesUrl
         }
 
@@ -87,7 +94,7 @@ class ProductController {
   // Route cập nhật sản phẩm
   async updateProduct(req, res) {
     try {
-      const { id, name, description, price, category, subCategory, sizes, bestseller } = req.body;
+      const { id, name, description, price, category, subCategory, sizes, bestseller, sizeColorQuantity, colors } = req.body;
       const product = await productModel.findById(id);
       if (!product) {
         return res.status(404).json({ message: 'Không tìm thấy sản phẩm !' });
@@ -100,7 +107,21 @@ class ProductController {
       if (category) product.category = category;
       if (subCategory) product.subCategory = subCategory;
       if (typeof bestseller !== 'undefined') product.bestseller = bestseller === 'true' ? true : false;
-      if (sizes) product.sizes = JSON.parse(sizes);
+      
+      if (sizes) {
+        const parsedSizes = JSON.parse(sizes);
+        product.sizes = parsedSizes;
+      }
+
+      if (sizeColorQuantity) {
+        const parsedSizeColorQuantity = JSON.parse(sizeColorQuantity);
+        product.sizeColorQuantity = parsedSizeColorQuantity;
+      }
+
+      if (colors) {
+        const parsedColors = JSON.parse(colors);
+        product.colors = parsedColors;
+      }
 
       // Xử lý hình ảnh mới nếu có
       const image1 = req.files.image1?.[0];
@@ -115,12 +136,94 @@ class ProductController {
             return result.secure_url;
           })
         );
-        // nếu gửi hình mới thì ghi đè toàn bộ mảng ảnh
         product.image = imagesUrl;
       }
 
       await product.save();
       res.json({ success: true, message: 'Cập nhật sản phẩm thành công !', product });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Route quản lý kho hàng - lấy danh sách tất cả sản phẩm với thông tin kho
+  async getInventory(req, res) {
+    try {
+      const products = await productModel.find({});
+      res.json({ success: true, products });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Route cập nhật số lượng sản phẩm theo size-color
+  async updateProductQuantity(req, res) {
+    try {
+      const { id, size, color, quantity } = req.body;
+      if (quantity < 0) {
+        return res.status(400).json({ success: false, message: 'Số lượng không được âm !' });
+      }
+      const product = await productModel.findById(id);
+      if (!product) {
+        return res.status(404).json({ success: false, message: 'Không tìm thấy sản phẩm !' });
+      }
+      const key = `${size}-${color}`;
+      product.sizeColorQuantity.set(key, Number(quantity));
+      await product.save();
+      res.json({ success: true, message: 'Cập nhật số lượng thành công !', product });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Route nhập thêm số lượng sản phẩm theo size-color
+  async restockProduct(req, res) {
+    try {
+      const { id, size, color, addQuantity } = req.body;
+      if (addQuantity <= 0) {
+        return res.status(400).json({ success: false, message: 'Số lượng nhập phải lớn hơn 0 !' });
+      }
+      const product = await productModel.findById(id);
+      if (!product) {
+        return res.status(404).json({ success: false, message: 'Không tìm thấy sản phẩm !' });
+      }
+      const key = `${size}-${color}`;
+      const currentQuantity = product.sizeColorQuantity.get(key) || 0;
+      product.sizeColorQuantity.set(key, currentQuantity + Number(addQuantity));
+      await product.save();
+      res.json({ success: true, message: 'Nhập hàng thành công !', product });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Route lấy sản phẩm bán chạy nhất
+  async getBestSellers(req, res) {
+    try {
+      const orders = await orderModel.find({});
+      const productSales = {};
+      
+      orders.forEach(order => {
+        if (order.items && Array.isArray(order.items)) {
+          order.items.forEach(item => {
+            if (item._id) {
+              productSales[item._id] = (productSales[item._id] || 0) + (item.quantity || 1);
+            }
+          });
+        }
+      });
+
+      const bestSellers = await productModel.find({});
+      const productsWithSales = bestSellers.map(product => ({
+        ...product.toObject(),
+        sold: productSales[product._id] || 0
+      })).sort((a, b) => b.sold - a.sold);
+
+      res.json({ success: true, products: productsWithSales });
     } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: error.message });

@@ -17,5 +17,9 @@ productRouter.post('/update', adminAuth.authenticate, uploadFields, ProductContr
 productRouter.post('/remove', adminAuth.authenticate, ProductController.removeProduct)
 productRouter.post('/single', ProductController.singleProduct)
 productRouter.get('/list', ProductController.listProducts)
+productRouter.get('/inventory', adminAuth.authenticate, ProductController.getInventory)
+productRouter.post('/update-quantity', adminAuth.authenticate, ProductController.updateProductQuantity)
+productRouter.post('/restock', adminAuth.authenticate, ProductController.restockProduct)
+productRouter.get('/best-sellers', adminAuth.authenticate, ProductController.getBestSellers)
 
 export default productRouter;

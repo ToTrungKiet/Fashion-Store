@@ -11,6 +11,7 @@ const Product = () => {
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState('');
   const [size, setSize] = useState('');
+  const [color, setColor] = useState('');
 
   const fetchProductData = async () => {
     products.map((item) => {
@@ -56,16 +57,78 @@ const Product = () => {
               <p className='pl-2'>(122)</p>
             </div>
             <p className='mt-5 text-3xl font-medium'>{formatPrice(productData.price)} {currency}</p>
+            <div className='mt-5 flex items-center gap-4'>
+              {(() => {
+                const sizeColorKey = size && color ? `${size}-${color}` : '';
+                const sizeColorQty = sizeColorKey && productData.sizeColorQuantity ? 
+                  (productData.sizeColorQuantity[sizeColorKey] || 0) : 0;
+                
+                const totalQty = productData.sizeColorQuantity ? 
+                  Object.values(productData.sizeColorQuantity).reduce((sum, qty) => sum + qty, 0) : 0;
+                
+                return (
+                  <>
+                    {totalQty > 0 ? (
+                      <p className='text-green-600 font-medium'>
+                        {!size || !color ? (
+                          <>Tổng cộng: <span className='font-bold'>{totalQty}</span> sản phẩm</>
+                        ) : (
+                          <>Size {size} - {color}: <span className='font-bold'>{sizeColorQty}</span> sản phẩm</>
+                        )}
+                      </p>
+                    ) : (
+                      <p className='text-red-600 font-bold'>Sản phẩm hết hàng</p>
+                    )}
+                  </>
+                );
+              })()}
+            </div>
             <p className='mt-5 text-gray-500 md:w-4/5'>{productData.description}</p>
             <div className='flex flex-col gap-4 my-8'>
-              <p>Chọn kích cỡ</p>
-              <div className='flex gap-2'>
-                {productData.sizes.map((item, index) => (
-                  <button onClick={() => setSize(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-rose-500 text-white bg-rose-400' : ''} cursor-pointer`} key={index}>{item}</button>
-                ))}
+              <div>
+                <p>Chọn màu sắc</p>
+                <div className='flex gap-3 mt-3'>
+                  {productData.colors?.map((item, index) => (
+                    <button 
+                      key={index} 
+                      onClick={() => setColor(item)} 
+                      className={`border py-2 px-4 rounded transition-all ${item === color ? 'border-rose-500 bg-rose-500 text-white' : 'border-gray-300 bg-white text-black hover:border-rose-500'}`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p>Chọn kích cỡ</p>
+                <div className='flex gap-2 mt-3'>
+                  {productData.sizes.map((item, index) => (
+                    <button onClick={() => setSize(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-rose-500 text-white bg-rose-400' : ''} cursor-pointer`} key={index}>{item}</button>
+                  ))}
+                </div>
               </div>
             </div>
-            <button onClick={() => addToCart(productData._id, size)} className='bg-rose-500 hover:bg-rose-600 text-white px-8 py-3 text-sm active:bg-rose-700 rounded-full cursor-pointer'>THÊM VÀO GIỎ HÀNG</button>
+            <button 
+              onClick={() => addToCart(productData._id, size, color)} 
+              disabled={(() => {
+                if (!size || !color) return true;
+                const sizeColorKey = `${size}-${color}`;
+                const qty = productData.sizeColorQuantity?.[sizeColorKey] || 0;
+                return qty === 0;
+              })()}
+              className={`${(() => {
+                if (!size || !color) return 'bg-gray-400 cursor-not-allowed';
+                const sizeColorKey = `${size}-${color}`;
+                const qty = productData.sizeColorQuantity?.[sizeColorKey] || 0;
+                return qty === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-rose-500 hover:bg-rose-600 active:bg-rose-700 cursor-pointer';
+              })()} text-white px-8 py-3 text-sm rounded-full`}>
+              {(() => {
+                if (!size || !color) return 'CHỌN SIZE VÀ MÀU';
+                const sizeColorKey = `${size}-${color}`;
+                const qty = productData.sizeColorQuantity?.[sizeColorKey] || 0;
+                return qty === 0 ? 'SẢN PHẨM HẾT HÀNG' : 'THÊM VÀO GIỎ HÀNG';
+              })()}
+            </button>
             <hr className='mt-8 sm:w-4/5' />
             <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
               <p>100% sản phẩm chính hãng.</p>
