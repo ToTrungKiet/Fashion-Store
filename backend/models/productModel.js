@@ -9,7 +9,9 @@ const productSchema = new mongoose.Schema(
     category: { type: String, required: true },
     subCategory: { type: String, required: true },
     sizes: { type: [String], required: true },
+    colors: { type: [String], default: ['Trắng', 'Đen', 'Xám'] },
     bestseller: { type: Boolean, default: false },
+    sizeColorQuantity: { type: Map, of: Number, default: {} }
   },
   {
     timestamps: true,

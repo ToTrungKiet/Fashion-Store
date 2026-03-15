@@ -1,5 +1,6 @@
 import userModel from "../models/userModel.js";
 import orderModel from "../models/orderModel.js";
+import productModel from "../models/productModel.js";
 import crypto from "crypto";
 import qs from "qs";
 import moment from "moment";
@@ -11,6 +12,21 @@ class OrderController {
   async placeOrder(req, res) {
     try {
         const { userId, items, amount, address } = req.body;
+        
+        // Giảm số lượng kho hàng
+        for (const item of items) {
+          const sizeColorKey = `${item.size}-${item.color}`;
+          const product = await productModel.findById(item._id);
+          if (product) {
+            const sizeColorQuantity = product.sizeColorQuantity;
+            const currentQuantity = sizeColorQuantity.get(sizeColorKey) || 0;
+            const newQuantity = Math.max(0, currentQuantity - item.quantity);
+            sizeColorQuantity.set(sizeColorKey, newQuantity);
+            await product.save();
+            console.log(`Updated ${product.name} ${sizeColorKey}: ${currentQuantity} -> ${newQuantity}`);
+          }
+        }
+        
         const orderData = {
           userId,
           items,

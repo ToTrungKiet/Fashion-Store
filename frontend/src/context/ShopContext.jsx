@@ -16,6 +16,7 @@ const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({})
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState('')
+  const [userId, setUserId] = useState('')
   const [selectedItems, setSelectedItems] = useState({})
 
   const addToCart = async (itemId, size, color) => {
@@ -182,7 +183,8 @@ const ShopContextProvider = (props) => {
     for (const itemId in cartItems) {
       for (const sizeColor in cartItems[itemId]) {
         if (cartItems[itemId][sizeColor] > 0) {
-          newSelected[`${itemId}-${sizeColor}`] = true;
+          const [size, color] = sizeColor.split('-');
+          newSelected[`${itemId}-${size}-${color}`] = true;
         }
       }
     }
@@ -224,6 +226,18 @@ const ShopContextProvider = (props) => {
   useEffect(() => {
     if (token) {
       getUserCart(token);
+      try {
+        // Decode JWT token để lấy userId
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        const decoded = JSON.parse(jsonPayload);
+        setUserId(decoded.id);
+      } catch (error) {
+        console.log('Error decoding token:', error);
+      }
     }
   }, [token])
 
@@ -232,7 +246,7 @@ const ShopContextProvider = (props) => {
     search, setSearch, showSearch, setShowSearch,
     cartItems, setCartItems, addToCart, getCartCount,
     updateQuantity, getCartAmount, formatPrice,
-    navigate, backendUrl, token, setToken,
+    navigate, backendUrl, token, setToken, userId,
     selectedItems, toggleSelectItem, selectAllItems, deselectAllItems, deleteSelectedItems, getSelectedCount
   }
 

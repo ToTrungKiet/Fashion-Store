@@ -35,7 +35,7 @@ const Cart = () => {
   }, 0);
 
   const selectedAmount = cartData.reduce((total, item) => {
-    const key = `${item._id}-${item.size}`;
+    const key = `${item._id}-${item.size}-${item.color}`;
     if (selectedItems[key]) {
       const product = products.find(p => p._id === item._id);
       return total + (product ? product.price * item.quantity : 0);

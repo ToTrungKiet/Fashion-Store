@@ -9,7 +9,7 @@ import AddressSelector from '../components/AddressSelector'
 
 const PlaceOrder = () => {
 
-  const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext)
+  const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products, userId } = useContext(ShopContext)
   const [method, setMethod] = useState('cod')
   const [formData, setFormData] = useState({
     firstName: '',
@@ -58,8 +58,6 @@ const PlaceOrder = () => {
     const value = e.target.value
     setFormData(prev => ({ ...prev, [name]: value }))
   }
-  const handlePayment = async () => {
-
   // Xử lý khi thay đổi địa chỉ từ AddressSelector
   const handleAddressChange = (addressData) => {
     setFormData(prev => ({
@@ -69,21 +67,16 @@ const PlaceOrder = () => {
       ward: addressData.ward
     }))
   }
-    const res = await axios.post(
-      "http://localhost:4000/api/payment/create-payment",
-      {
-        amount: totalAmount
-      }
-    );
-
-    window.location.href = res.data.paymentUrl;
-
-  };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
     
-    // Validate địa chỉ
+    // Validate tất cả các trường bắt buộc
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.address) {
+      toast.error('Vui lòng điền đầy đủ thông tin giao hàng!')
+      return
+    }
+    
     if (!formData.city || !formData.district || !formData.ward) {
       toast.error('Vui lòng chọn đầy đủ địa chỉ giao hàng!')
       return
@@ -96,7 +89,10 @@ const PlaceOrder = () => {
           if (cartItems[items][item] > 0) {
             const itemInfo = structuredClone(products.find(product => product._id === items))
             if (itemInfo) {
-              itemInfo.size = item
+              itemInfo._id = items
+              const [size, color] = item.split('-')
+              itemInfo.size = size
+              itemInfo.color = color
               itemInfo.quantity = cartItems[items][item]
               orderItems.push(itemInfo)
             }
@@ -104,6 +100,7 @@ const PlaceOrder = () => {
         }
       }
       let orderData = {
+        userId,
         address: formData,
         items: orderItems,
         amount: getCartAmount() + delivery_fee,
@@ -121,32 +118,21 @@ const PlaceOrder = () => {
           break
         case 'momo':
           break
-        case 'zalopay':
+        case 'VNPay':
+          const responseVNpay = await axios.post(
+            backendUrl + "/api/payment/create-payment",
+            orderData,
+            { headers: { token } }
+          );
+          if (responseVNpay.data.success) {
+            window.location.href = responseVNpay.data.paymentUrl;
+          } else {
+            toast.error(responseVNpay.data.message);
+          }
           break
         default:
           break
       }
-
-    } catch (error) {
-      console.log(error)
-          break;
-        case 'momo':
-          break;
-          case 'VNPay':
-  const responseVNpay = await axios.post(
-    backendUrl + "/api/payment/create-payment",
-    orderData,
-    { headers: { token } }
-  );
-
-  if (responseVNpay.data.success) {
-    window.location.href = responseVNpay.data.paymentUrl;
-  } else {
-    toast.error(responseVNpay.data.message);
-  }
-  break;
-      }
-
     } catch (error) {
       console.log(error);
       console.log("method:", method);
