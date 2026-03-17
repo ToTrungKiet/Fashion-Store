@@ -22,52 +22,62 @@ const ShopContextProvider = (props) => {
   const addToCart = async (itemId, size, color) => {
     let cartData = structuredClone(cartItems);
     const product = products.find(p => p._id === itemId);
-    
+
+    if (!token) {
+      toast.error('Vui lòng đăng nhập !')
+      navigate('/login')
+      return;
+    }
+
     if (!size) {
       toast.error('Vui lòng chọn size !')
       return;
     }
-    
+
     if (!color) {
       toast.error('Vui lòng chọn màu !')
       return;
     }
-    
+
     if (!product) {
       toast.error('Không tìm thấy sản phẩm !')
       return;
     }
-    
+
     const sizeColorKey = `${size}-${color}`;
     const sizeColorQuantity = product.sizeColorQuantity?.[sizeColorKey] || 0;
     if (sizeColorQuantity === 0) {
       toast.error(`Size ${size} - Màu ${color} hết hàng!`)
       return;
     }
-    
+
     const currentQuantity = cartData[itemId]?.[sizeColorKey] || 0;
     if (currentQuantity >= sizeColorQuantity) {
       toast.error(`Size ${size} - Màu ${color} chỉ còn ${sizeColorQuantity} chiếc. Vui lòng giảm số lượng!`)
       return;
     }
-    
-    if (cartData[itemId]) {
-      if (cartData[itemId][sizeColorKey]) {
-        cartData[itemId][sizeColorKey] += 1;
-      }
-      else {
-        cartData[itemId][sizeColorKey] = 1;
-      }
-    }
-    else {
-      cartData[itemId] = {};
-      cartData[itemId][sizeColorKey] = 1;
-    }
-    setCartItems(cartData);
 
     if (token) {
       try {
-        await axios.post(backendUrl + '/api/cart/add', {itemId, size, color}, {headers: {token}});
+        const response = await axios.post(backendUrl + '/api/cart/add', { itemId, size, color }, { headers: { token } });
+        if (response.data.success) {
+          if (cartData[itemId]) {
+            if (cartData[itemId][sizeColorKey]) {
+              cartData[itemId][sizeColorKey] += 1;
+            }
+            else {
+              cartData[itemId][sizeColorKey] = 1;
+            }
+          }
+          else {
+            cartData[itemId] = {};
+            cartData[itemId][sizeColorKey] = 1;
+          }
+          setCartItems(cartData);
+          toast.success(response.data.message)
+        } else {
+          toast.error(response.data.message)
+        }
       } catch (error) {
         console.log(error);
         toast.error('Lỗi kết nối');
@@ -95,12 +105,12 @@ const ShopContextProvider = (props) => {
   const updateQuantity = async (itemId, size, color, quantity) => {
     let cartData = structuredClone(cartItems);
     const product = products.find(p => p._id === itemId);
-    
+
     if (!product) {
       toast.error('Không tìm thấy sản phẩm !')
       return;
     }
-    
+
     const sizeColorKey = `${size}-${color}`;
     const sizeColorQuantity = product.sizeColorQuantity?.[sizeColorKey] || 0;
     if (quantity > sizeColorQuantity) {
@@ -109,13 +119,13 @@ const ShopContextProvider = (props) => {
       setCartItems(cartData);
       return;
     }
-    
+
     cartData[itemId][sizeColorKey] = quantity;
     setCartItems(cartData);
-    
+
     if (token) {
       try {
-        await axios.post(backendUrl + '/api/cart/update', {itemId, size, color, quantity}, {headers: {token}});
+        await axios.post(backendUrl + '/api/cart/update', { itemId, size, color, quantity }, { headers: { token } });
       } catch (error) {
         console.log(error);
         toast.error('Lỗi kết nối');
@@ -160,7 +170,7 @@ const ShopContextProvider = (props) => {
 
   const getUserCart = async (token) => {
     try {
-      const response = await axios.post(backendUrl + '/api/cart/get', {}, {headers: {token}});
+      const response = await axios.post(backendUrl + '/api/cart/get', {}, { headers: { token } });
       if (response.data.success) {
         setCartItems(response.data.cartData);
       }
@@ -212,7 +222,7 @@ const ShopContextProvider = (props) => {
   const getSelectedCount = () => {
     return Object.values(selectedItems).filter(Boolean).length;
   }
-  
+
   useEffect(() => {
     getProductsData();
   }, [])
@@ -230,7 +240,7 @@ const ShopContextProvider = (props) => {
         // Decode JWT token để lấy userId
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
         const decoded = JSON.parse(jsonPayload);

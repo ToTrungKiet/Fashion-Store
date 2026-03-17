@@ -116,8 +116,6 @@ const PlaceOrder = () => {
             toast.error(response.data.message)
           }
           break
-        case 'momo':
-          break
         case 'VNPay':
           const responseVNpay = await axios.post(
             backendUrl + "/api/payment/create-payment",
@@ -173,15 +171,6 @@ const PlaceOrder = () => {
           <Title text1={'PHƯƠNG THỨC'} text2={'THANH TOÁN'} />
           {/* CHỌN PHƯƠNG THỨC THANH TOÁN */}
           <div className='flex gap-3 flex-col lg:flex-row'>
-
-            {/* MOMO */}
-            <div
-              onClick={() => setMethod('momo')}
-              className='flex items-center gap-3 border p-2 px-3 cursor-pointer'
-            >
-              <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'momo' ? 'bg-red-500' : ''}`}></p>
-              <img className='h-6 mx-4' src={assets.momo_logo} alt='' />
-            </div>
 
             {/* VNPAY */}
             <div

@@ -1,11 +1,18 @@
-import multer from 'multer'
+import multer from 'multer';
 
-const storage = multer.diskStorage({
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    }
-})
+class UploadMiddleware {
+  constructor() {
+    this.storage = multer.diskStorage({
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      }
+    });
 
-const upload = multer({storage});
+    this.upload = multer({ storage: this.storage });
+  }
+  fields(fields) {
+    return this.upload.fields(fields);
+  }
+}
 
-export default upload;
+export default new UploadMiddleware();
