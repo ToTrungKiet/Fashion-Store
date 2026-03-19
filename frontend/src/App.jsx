@@ -17,27 +17,37 @@ import Profile from "./pages/Profile";
 import ResetPassword from './pages/ResetPassword';
 import PaymentSuccess from './pages/PaymentSuccess'
 function App() {
-  
   return (
-    <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
+    <div className="min-h-screen flex flex-col">
+      
       <ToastContainer />
-      <Navbar />
-      <SearchBar />
-      <Routes>
-        <Route path="/payment-success" element={<PaymentSuccess />} />
-        <Route path="/profile" element={<Profile />} /> 
-        <Route path='/' element={<Home/>} />
-        <Route path='/collection' element={<Collection/>} />
-        <Route path='/about' element={<About/>} />
-        <Route path='/contact' element={<Contact/>} />
-        <Route path='/product/:productId' element={<Product/>} />
-        <Route path='/cart' element={<Cart/>} />
-        <Route path='/login' element={<Login/>} />
-        <Route path='/reset-password/:token' element={<ResetPassword/>} />
-        <Route path='/place-order' element={<PlaceOrder/>} />
-        <Route path='/orders' element={<Orders/>} />
-      </Routes>
+
+      <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] flex flex-col flex-1'>
+        
+        <Navbar />
+        <SearchBar />
+
+        {/* Content */}
+        <div className="flex-1">
+          <Routes>
+            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/profile" element={<Profile />} /> 
+            <Route path='/' element={<Home/>} />
+            <Route path='/collection' element={<Collection/>} />
+            <Route path='/about' element={<About/>} />
+            <Route path='/contact' element={<Contact/>} />
+            <Route path='/product/:productId' element={<Product/>} />
+            <Route path='/cart' element={<Cart/>} />
+            <Route path='/login' element={<Login/>} />
+            <Route path='/reset-password/:token' element={<ResetPassword/>} />
+            <Route path='/place-order' element={<PlaceOrder/>} />
+            <Route path='/orders' element={<Orders/>} />
+          </Routes>
+        </div>
+
       <Footer />
+      </div>
+      
     </div>
   )
 }

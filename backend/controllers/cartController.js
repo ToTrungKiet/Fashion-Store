@@ -1,68 +1,61 @@
-import userModel from "../models/userModel.js";
+import cartService from "../services/cartService.js";
 
 class CartController {
-  // Route thêm sản phẩm vào giỏ hàng người dùng
-  async addToCart(req, res) {
-    try {
-      if (req.user.role === "admin") {
-        return res.json({
-          success: false,
-          message: "Admin không được phép thêm vào giỏ hàng",
-        });
-      }
 
-      const { itemId, size, color } = req.body;
-      const userId = req.user.id;
-      const userData = await userModel.findById(userId);
-      const cartData = userData.cartData;
-      const sizeColorKey = `${size}-${color}`;
-      if (cartData[itemId]) {
-        if (cartData[itemId][sizeColorKey]) {
-          cartData[itemId][sizeColorKey] += 1;
-        } else {
-          cartData[itemId][sizeColorKey] = 1;
-        }
-      } else {
-        cartData[itemId] = {};
-        cartData[itemId][sizeColorKey] = 1;
-      }
-      await userModel.findByIdAndUpdate(userId, { cartData });
-      res.json({ success: true, message: "Đã thêm vào giỏ hàng!" });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ success: false, message: error.message });
-    }
-  }
-
-  // Route cập nhật giỏ hàng người dùng
-  async updateCart(req, res) {
+  addToCart = async (req, res) => {
     try {
-      const { itemId, size, color, quantity } = req.body;
-      const userId = req.user.id;
-      const userData = await userModel.findById(userId);
-      const cartData = userData.cartData;
-      const sizeColorKey = `${size}-${color}`;
-      cartData[itemId][sizeColorKey] = quantity;
-      await userModel.findByIdAndUpdate(userId, { cartData });
-      res.json({ success: true, message: "Đã cập nhật giỏ hàng!" });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ success: false, message: error.message });
-    }
-  }
+      const cart = await cartService.addToCart(req.user, req.body);
 
-  // Route dữ liệu giỏ hàng người dùng
-  async getUserCart(req, res) {
-    try {
-      const userId = req.user.id;
-      const userData = await userModel.findById(userId);
-      let cartData = userData.cartData;
-      res.json({ success: true, cartData });
+      return res.json({
+        success: true,
+        message: "Đã thêm vào giỏ hàng !",
+        data: cart
+      });
+
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ success: false, message: error.message });
+      return res.json({
+        success: false,
+        message: error.message
+      });
     }
-  }
+  };
+
+  updateCart = async (req, res) => {
+    try {
+      await cartService.updateCart(
+        req.user.id,
+        req.body
+      );
+
+      return res.json({
+        success: true,
+        message: "Cập nhật giỏ hàng thành công !",
+      });
+
+    } catch (error) {
+      return res.json({
+        success: false,
+        message: error.message
+      });
+    }
+  };
+
+  getUserCart = async (req, res) => {
+    try {
+      const cartData = await cartService.getCart(req.user.id);
+
+      return res.json({
+        success: true,
+        cartData
+      });
+
+    } catch (error) {
+      return res.json({
+        success: false,
+        message: error.message
+      });
+    }
+  };
 }
 
 export default new CartController();

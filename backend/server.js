@@ -11,58 +11,35 @@ import cartRouter from './routes/cartRoute.js'
 import orderRouter from './routes/orderRoute.js'
 import paymentRouter from './routes/paymentRoute.js'
 
-class Server {
+// init app
+const app = express()
+const PORT = process.env.PORT || 4000
 
-    constructor () {
-        this.app = express()
-        this.port = process.env.PORT || 4000
+// connect config
+database.connect()
+cloudinaryService.config()
 
-        this.connectServices()
-        this.configMiddleware()
-        this.configRoutes()
-    }
+// middleware
+app.use(express.json())
 
-    connectServices() {
-        database.connect()
-        cloudinaryService.config()
-    }
+app.use(cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    credentials: true
+}))
 
-    configMiddleware() {
+// routes
+app.use('/api/user', userRouter)
+app.use('/api/product', productRouter)
+app.use('/api/cart', cartRouter)
+app.use('/api/order', orderRouter)
+app.use('/api/payment', paymentRouter)
 
-        // parse json
-        this.app.use(express.json())
+// test API
+app.get('/', (req, res) => {
+    res.json('API đang hoạt động !')
+})
 
-        // fix CORS cho React
-        this.app.use(cors({
-            origin: ["http://localhost:5173", "http://localhost:5174"],
-            credentials: true
-        }))
-
-    }
-
-    configRoutes() {
-
-        // API routes
-        this.app.use('/api/user', userRouter)
-        this.app.use('/api/product', productRouter)
-        this.app.use('/api/cart', cartRouter)
-        this.app.use('/api/order', orderRouter)
-        this.app.use('/api/payment', paymentRouter)
-
-        // test API
-        this.app.get('/', (req, res) => {
-            res.json('API đang hoạt động !')
-        })
-
-    }
-    
-    start() {
-        this.app.listen(this.port, () => {
-            console.log(`Server đang chạy ở http://localhost:${this.port}`)
-        })
-    }
-
-}
-
-const server = new Server()
-server.start()
+// start server
+app.listen(PORT, () => {
+    console.log(`Server đang chạy ở http://localhost:${PORT}`)
+})

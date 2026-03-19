@@ -10,8 +10,6 @@ orderRouter.post('/status',auth.authUser,adminAuth.authenticate, OrderController
 
 orderRouter.post('/place', auth.authUser, OrderController.placeOrder)
 
-orderRouter.post('/VNPay', auth.authUser, OrderController.placeOrderVNPay)
-
 orderRouter.post('/user-orders', auth.authUser, OrderController.userOrders)
 
 export default orderRouter;
