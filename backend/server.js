@@ -23,7 +23,7 @@ cloudinaryService.config()
 app.use(express.json())
 
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: ["https://fashion-store-frontend-4e6e.onrender.com", "https://fashion-store-admin.onrender.com"],
     credentials: true
 }))
 
