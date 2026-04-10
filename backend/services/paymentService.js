@@ -28,7 +28,7 @@ class PaymentService {
     const tmnCode = process.env.VNP_TMNCODE;
     const secretKey = process.env.VNP_HASHSECRET;
     const vnpUrl = process.env.VNP_URL;
-    const returnUrl = "http://localhost:5173/payment-success";
+    const returnUrl = "https://fashion-store-frontend-5t41.onrender.com/payment-success";
 
     const { items, amount, address } = data;
 
@@ -176,7 +176,7 @@ class PaymentService {
     const tmnCode = process.env.VNP_TMNCODE;
     const secretKey = process.env.VNP_HASHSECRET;
     const vnpUrl = process.env.VNP_URL;
-    const returnUrl = "http://localhost:5173/payment-success";
+    const returnUrl = "https://fashion-store-frontend-5t41.onrender.com/payment-success";
 
     const order = await orderModel.findById(orderId);
 
